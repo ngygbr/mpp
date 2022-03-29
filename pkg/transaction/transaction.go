@@ -2,12 +2,12 @@ package transaction
 
 import (
 	"encoding/json"
-	"mock-paymentprocessor/pkg/db"
+	"mpp/pkg/db"
 	"net/http"
 	"time"
 
-	"mock-paymentprocessor/pkg/model"
-	validate "mock-paymentprocessor/pkg/validate"
+	"mpp/pkg/model"
+	validate "mpp/pkg/validate"
 
 	"github.com/gorilla/mux"
 )

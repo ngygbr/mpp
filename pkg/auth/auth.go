@@ -6,7 +6,7 @@ import (
 	"net/http"
 	"time"
 
-	"mock-paymentprocessor/pkg/config"
+	"mpp/pkg/config"
 
 	"github.com/dgrijalva/jwt-go"
 )

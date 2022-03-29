@@ -1,6 +1,6 @@
 package types
 
-import "mock-paymentprocessor/pkg/model"
+import "mpp/pkg/model"
 
 var ValidTypes = []string{
 	"dragonpay",

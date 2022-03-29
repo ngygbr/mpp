@@ -2,9 +2,9 @@ package types
 
 import (
 	"github.com/rs/xid"
-	"mock-paymentprocessor/pkg/db"
-	"mock-paymentprocessor/pkg/model"
-	validate "mock-paymentprocessor/pkg/validate"
+	"mpp/pkg/db"
+	"mpp/pkg/model"
+	validate "mpp/pkg/validate"
 	"time"
 )
 

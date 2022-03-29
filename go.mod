@@ -1,4 +1,4 @@
-module mock-paymentprocessor
+module mpp
 
 go 1.17
 
@@ -10,6 +10,7 @@ require (
 	github.com/pkg/errors v0.9.1
 	github.com/rs/xid v1.3.0
 	github.com/spf13/viper v1.10.1
+	github.com/stretchr/testify v1.7.1
 )
 
 require (
@@ -36,7 +37,6 @@ require (
 	github.com/spf13/jwalterweatherman v1.1.0 // indirect
 	github.com/spf13/pflag v1.0.5 // indirect
 	github.com/stretchr/objx v0.1.0 // indirect
-	github.com/stretchr/testify v1.7.1 // indirect
 	github.com/subosito/gotenv v1.2.0 // indirect
 	go.opencensus.io v0.23.0 // indirect
 	golang.org/x/net v0.0.0-20210813160813-60bc85c4be6d // indirect

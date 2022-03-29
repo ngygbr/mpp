@@ -2,7 +2,7 @@ package db
 
 import (
 	"encoding/json"
-	"mock-paymentprocessor/pkg/model"
+	"mpp/pkg/model"
 
 	"github.com/dgraph-io/badger/v3"
 )

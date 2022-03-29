@@ -4,11 +4,13 @@ import (
 	"bytes"
 	"encoding/json"
 	"io"
-	"mock-paymentprocessor/pkg/model"
-	"mock-paymentprocessor/pkg/transaction"
+	"mpp/pkg/model"
+	"mpp/pkg/transaction"
 	"reflect"
 	"strings"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 func TestCorrectResponseCode(t *testing.T) {
@@ -26,9 +28,8 @@ func TestCorrectResponseCode(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if got := correctResponseCode(tt.message); got != tt.want {
-				t.Errorf("correctResponseCode() = %v, want %v", got, tt.want)
-			}
+			responseCode := correctResponseCode(tt.message)
+			assert.Equal(t, tt.want, responseCode)
 		})
 	}
 }

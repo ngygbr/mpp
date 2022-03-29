@@ -4,13 +4,13 @@ import (
 	"fmt"
 	"github.com/dgrijalva/jwt-go"
 	"github.com/pkg/errors"
-	"mock-paymentprocessor/pkg/auth"
-	"mock-paymentprocessor/pkg/config"
-	"mock-paymentprocessor/pkg/controller"
+	"mpp/pkg/auth"
+	"mpp/pkg/config"
+	"mpp/pkg/controller"
 	"net/http"
 
-	"mock-paymentprocessor/pkg/healthcheck"
-	"mock-paymentprocessor/pkg/transaction"
+	"mpp/pkg/healthcheck"
+	"mpp/pkg/transaction"
 
 	"github.com/gorilla/mux"
 )

@@ -1,14 +1,14 @@
 package main
 
 import (
-	"mock-paymentprocessor/internal/api"
-	"mock-paymentprocessor/pkg/db"
-	"mock-paymentprocessor/pkg/transaction"
+	"mpp/internal/api"
+	"mpp/pkg/db"
+	"mpp/pkg/transaction"
 )
 
 func main() {
 
-	if _, err := db.Connect(); err != nil {
+	if _, err := db.Connect("/tmp"); err != nil {
 		panic("failed to connect database")
 	}
 

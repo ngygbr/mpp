@@ -2,10 +2,10 @@ package controller
 
 import (
 	"encoding/json"
-	"mock-paymentprocessor/pkg/model"
-	transaction2 "mock-paymentprocessor/pkg/transaction"
-	"mock-paymentprocessor/pkg/transaction/types"
-	validate "mock-paymentprocessor/pkg/validate"
+	"mpp/pkg/model"
+	transaction2 "mpp/pkg/transaction"
+	"mpp/pkg/transaction/types"
+	validate "mpp/pkg/validate"
 	"net/http"
 )
 

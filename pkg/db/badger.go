@@ -8,8 +8,8 @@ import (
 
 var Database *badger.DB
 
-func Connect() (*badger.DB, error) {
-	options := badger.DefaultOptions("/tmp")
+func Connect(path string) (*badger.DB, error) {
+	options := badger.DefaultOptions(path)
 
 	var err error
 	Database, err = badger.Open(options)

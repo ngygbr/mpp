@@ -2,7 +2,7 @@ package validpackage
 
 import (
 	"github.com/pkg/errors"
-	"mock-paymentprocessor/pkg/model"
+	"mpp/pkg/model"
 	"testing"
 )
 
