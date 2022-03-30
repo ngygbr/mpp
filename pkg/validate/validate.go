@@ -1,6 +1,7 @@
 package validpackage
 
 import (
+	configuration "mpp/pkg/config"
 	"strconv"
 	"strings"
 	"time"
@@ -10,6 +11,8 @@ import (
 	"github.com/fluidpay/dough"
 	"github.com/pkg/errors"
 )
+
+var config = configuration.GetConfig()
 
 func ValidateCreditCard(card *model.CreditCard) error {
 
@@ -45,15 +48,25 @@ func ValidateCreditCard(card *model.CreditCard) error {
 }
 
 func CheckIfSpecialCardNumber(card *model.CreditCard) error {
-	if card.CardNumber == "4455444455551111" {
-		return errors.New("limit exceeded")
+
+	if !config.DisableLimit {
+		if card.CardNumber == "4455444455551111" {
+			return errors.New("limit exceeded")
+		}
 	}
-	if card.CardNumber == "7755444455551111" {
-		return errors.New("daily limit exceeded")
+
+	if !config.DisableDailyLimit {
+		if card.CardNumber == "7755444455551111" {
+			return errors.New("daily limit exceeded")
+		}
 	}
-	if card.CardNumber == "8888888888888888" {
-		return errors.New("fraud detected")
+
+	if !config.DisableFraudDetection {
+		if card.CardNumber == "8888888888888888" {
+			return errors.New("fraud detected")
+		}
 	}
+
 	if card.CardNumber == "0000000000000000" {
 		return errors.New("card blocked")
 	}
