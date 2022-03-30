@@ -2,13 +2,13 @@ package auth
 
 import (
 	"encoding/json"
-	"github.com/pkg/errors"
 	"net/http"
 	"time"
 
-	"mpp/pkg/config"
+	configuration "mpp/pkg/config"
 
 	"github.com/dgrijalva/jwt-go"
+	"github.com/pkg/errors"
 )
 
 type User struct {
@@ -16,7 +16,7 @@ type User struct {
 	Token string `json:"token"`
 }
 
-var config = utils.GetConfig()
+var config = configuration.GetConfig()
 
 func Login(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")

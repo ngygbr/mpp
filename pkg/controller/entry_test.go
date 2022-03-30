@@ -4,11 +4,11 @@ import (
 	"bytes"
 	"encoding/json"
 	"io"
-	"mpp/pkg/model"
-	"mpp/pkg/transaction"
 	"reflect"
 	"strings"
 	"testing"
+
+	"mpp/pkg/model"
 
 	"github.com/stretchr/testify/assert"
 )
@@ -19,11 +19,11 @@ func TestCorrectResponseCode(t *testing.T) {
 		message string
 		want    uint64
 	}{
-		{"fraud detection", "fraud detected", transaction.FraudDetectedCode},
-		{"limit exceeded", "limit exceeded", transaction.LimitExceededCode},
-		{"daily limit exceeded", "daily limit exceeded", transaction.DailyLimitExceededCode},
-		{"card blocked", "card blocked", transaction.CardBlockedCode},
-		{"success", "success", transaction.SuccessCode},
+		{"fraud detection", "fraud detected", FraudDetectedCode},
+		{"limit exceeded", "limit exceeded", LimitExceededCode},
+		{"daily limit exceeded", "daily limit exceeded", DailyLimitExceededCode},
+		{"card blocked", "card blocked", CardBlockedCode},
+		{"success", "success", SuccessCode},
 		{"default", "any", 400},
 	}
 	for _, tt := range tests {

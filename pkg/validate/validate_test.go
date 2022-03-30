@@ -1,9 +1,11 @@
 package validpackage
 
 import (
-	"github.com/pkg/errors"
-	"mpp/pkg/model"
 	"testing"
+
+	"mpp/pkg/model"
+
+	"github.com/pkg/errors"
 )
 
 func TestValidateCreditCard(t *testing.T) {
@@ -64,7 +66,7 @@ func TestValidateCreditCard(t *testing.T) {
 	}
 }
 
-func TestSpecialCardNumbers(t *testing.T) {
+func TestCheckIfSpecialCardNumber(t *testing.T) {
 	tests := []struct {
 		name    string
 		card *model.CreditCard
@@ -97,7 +99,7 @@ func TestSpecialCardNumbers(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if err := SpecialCardNumbers(tt.card); err.Error() != tt.errMsg.Error() {
+			if err := CheckIfSpecialCardNumber(tt.card); err.Error() != tt.errMsg.Error() {
 				t.Errorf("got error should be %v, but expected error msg was %v", err, tt.errMsg)
 			}
 		})

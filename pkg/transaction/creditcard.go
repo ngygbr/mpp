@@ -1,13 +1,14 @@
-package types
+package transaction
 
 import (
-	"github.com/pkg/errors"
-	"mpp/pkg/db"
-	"mpp/pkg/model"
-	validate "mpp/pkg/validate"
 	"time"
 
+	"mpp/pkg/db"
+	"mpp/pkg/model"
+	validator "mpp/pkg/validate"
+
 	"github.com/fluidpay/dough"
+	"github.com/pkg/errors"
 	"github.com/rs/xid"
 )
 
@@ -16,15 +17,11 @@ func CCTransaction(transaction model.Transaction) (model.Transaction, error) {
 	transaction.ID = xid.New().String()
 	transaction.PaymentMethodType = "creditcard"
 
-	if err := validate.SpecialCardNumbers(transaction.PaymentMethod.CreditCard); err != nil {
+	if err := validator.ValidateCreditCard(transaction.PaymentMethod.CreditCard); err != nil {
 		return model.Transaction{}, err
 	}
 
-	if err := validate.ValidateCreditCard(transaction.PaymentMethod.CreditCard); err != nil {
-		return model.Transaction{}, err
-	}
-
-	if err := validate.ValidateAddress(&transaction.BillingAddress); err != nil {
+	if err := validator.CheckIfSpecialCardNumber(transaction.PaymentMethod.CreditCard); err != nil {
 		return model.Transaction{}, err
 	}
 

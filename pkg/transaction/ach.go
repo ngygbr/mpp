@@ -1,11 +1,13 @@
-package types
+package transaction
 
 import (
-	"github.com/rs/xid"
+	"time"
+
 	"mpp/pkg/db"
 	"mpp/pkg/model"
-	validate "mpp/pkg/validate"
-	"time"
+	validator "mpp/pkg/validate"
+
+	"github.com/rs/xid"
 )
 
 func ACHTransaction(transaction model.Transaction) (model.Transaction, error) {
@@ -13,11 +15,7 @@ func ACHTransaction(transaction model.Transaction) (model.Transaction, error) {
 	transaction.ID = xid.New().String()
 	transaction.PaymentMethodType = "ach"
 
-	if err := validate.ValidateAch(transaction.PaymentMethod.Ach); err != nil {
-		return model.Transaction{}, err
-	}
-
-	if err := validate.ValidateAddress(&transaction.BillingAddress); err != nil {
+	if err := validator.ValidateAch(transaction.PaymentMethod.Ach); err != nil {
 		return model.Transaction{}, err
 	}
 

@@ -1,4 +1,4 @@
-package types
+package transaction
 
 import (
 	"github.com/stretchr/testify/assert"
@@ -7,7 +7,7 @@ import (
 	"testing"
 )
 
-func TestACHTransaction(t *testing.T) {
+func TestCCTransaction(t *testing.T) {
 	type args struct {
 		transaction model.Transaction
 	}
@@ -15,16 +15,16 @@ func TestACHTransaction(t *testing.T) {
 		name    string
 		args    args
 	}{
-		{"Ach transaction test", args{transaction: model.Transaction{
+		{"Credit card transaction test", args{transaction: model.Transaction{
 			PaymentMethod:     model.PaymentMethod{
-				Ach: &model.Ach{
-					AccountNumber: "123456789",
-					RoutingNumber: "123456789",
-					AccountType:   "checking",
-					SECCode:       "web",
+				CreditCard: &model.CreditCard{
+					CardNumber:     "4111111111111111",
+					HolderName:     "Tester Holder",
+					ExpirationDate: "05/25",
+					CVC:            "444",
 				},
 			},
-			Amount:            10000,
+			Amount:            1000,
 			BillingAddress:    model.Address{
 				FirstName:    "Tester",
 				LastName:     "Holder",
@@ -38,17 +38,17 @@ func TestACHTransaction(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			db.Connect("/tmp/achtest")
+			db.Connect("/tmp/cctest")
 
-			got, _ := ACHTransaction(tt.args.transaction)
+			got, _ := CCTransaction(tt.args.transaction)
 
 			assert.NotZero(t, got.ID)
 			assert.Equal(t, "pending_settlement", got.Status)
-			assert.Equal(t, "ach", got.PaymentMethodType)
+			assert.Equal(t, "creditcard", got.PaymentMethodType)
 			assert.NotZero(t, got.CreatedAt)
 			assert.NotZero(t, got.UpdatedAt)
 
-			assert.Equal(t, uint64(10000), got.Amount)
+			assert.Equal(t, uint64(1000), got.Amount)
 			assert.Equal(t, tt.args.transaction.PaymentMethod, got.PaymentMethod)
 			assert.Equal(t, tt.args.transaction.BillingAddress, got.BillingAddress)
 		})

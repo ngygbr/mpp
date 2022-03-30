@@ -1,13 +1,14 @@
 package validpackage
 
 import (
-	"github.com/pkg/errors"
-	"mpp/pkg/model"
 	"strconv"
 	"strings"
 	"time"
 
+	"mpp/pkg/model"
+
 	"github.com/fluidpay/dough"
+	"github.com/pkg/errors"
 )
 
 func ValidateCreditCard(card *model.CreditCard) error {
@@ -43,7 +44,7 @@ func ValidateCreditCard(card *model.CreditCard) error {
 	return nil
 }
 
-func SpecialCardNumbers(card *model.CreditCard) error {
+func CheckIfSpecialCardNumber(card *model.CreditCard) error {
 	if card.CardNumber == "4455444455551111" {
 		return errors.New("limit exceeded")
 	}
@@ -169,6 +170,16 @@ func ValidatePaymentMethod(paymentMethod *model.PaymentMethod) error {
 		if paymentMethod.Ach != nil || paymentMethod.ApplePay != nil || paymentMethod.GooglePay != nil || paymentMethod.CreditCard != nil {
 			return errors.New("only one payment method is allowed")
 		}
+	}
+
+	return nil
+}
+
+func ValidateAmount(amount uint64) error {
+
+	stringFormat := strconv.FormatUint(amount, 10)
+	if !amountregex.Match([]byte(stringFormat)) {
+		return errors.New("invalid transaction amount")
 	}
 
 	return nil

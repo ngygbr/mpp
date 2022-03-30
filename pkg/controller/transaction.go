@@ -1,34 +1,26 @@
-package transaction
+package controller
 
 import (
 	"encoding/json"
-	"mpp/pkg/db"
 	"net/http"
 	"time"
 
+	"mpp/pkg/db"
 	"mpp/pkg/model"
-	validate "mpp/pkg/validate"
+	validator "mpp/pkg/validate"
 
 	"github.com/gorilla/mux"
 )
 
-const (
-	SuccessCode            = 100
-	LimitExceededCode      = 201
-	CardBlockedCode        = 202
-	DailyLimitExceededCode = 203
-	FraudDetectedCode      = 204
-	ErrorOccurredCode      = 206
-)
-
 func ProcessGetTransactionByID(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+
 	urlParams := mux.Vars(r)
 	transactionId := urlParams["id"]
-	w.Header().Set("Content-Type", "application/json")
 
 	var response model.ActionResponse
 
-	if err := validate.ValidateXID(transactionId); err != nil {
+	if err := validator.ValidateXID(transactionId); err != nil {
 		response.SetActionResponse(ErrorOccurredCode, err, nil, nil)
 		w.WriteHeader(http.StatusBadRequest)
 		json.NewEncoder(w).Encode(response)
@@ -53,13 +45,14 @@ func ProcessGetTransactionByID(w http.ResponseWriter, r *http.Request) {
 }
 
 func ProcessDeleteTransaction(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+
 	urlParams := mux.Vars(r)
 	transactionId := urlParams["id"]
-	w.Header().Set("Content-Type", "application/json")
 
 	var response model.ActionResponse
 
-	if err := validate.ValidateXID(transactionId); err != nil {
+	if err := validator.ValidateXID(transactionId); err != nil {
 		response.SetActionResponse(ErrorOccurredCode, err, nil, nil)
 		w.WriteHeader(http.StatusBadRequest)
 		json.NewEncoder(w).Encode(response)
@@ -128,10 +121,13 @@ func ProcessDeleteAllTransactions(w http.ResponseWriter, r *http.Request) {
 }
 
 func RejectTransaction(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+
 	urlParams := mux.Vars(r)
 	transactionId := urlParams["id"]
-	w.Header().Set("Content-Type", "application/json")
+
 	var response model.ActionResponse
+
 	transaction, err := db.GetByID(transactionId)
 	if err != nil {
 		response.SetActionResponse(ErrorOccurredCode, err, nil, nil)
@@ -142,6 +138,7 @@ func RejectTransaction(w http.ResponseWriter, r *http.Request) {
 
 	transaction.Status = "rejected"
 	transaction.UpdatedAt = time.Now()
+
 	err = db.Update(&transaction)
 	if err != nil {
 		response.SetActionResponse(ErrorOccurredCode, err, nil, nil)
@@ -160,10 +157,12 @@ func RejectTransaction(w http.ResponseWriter, r *http.Request) {
 }
 
 func SettleTransaction(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
 	urlParams := mux.Vars(r)
 	transactionId := urlParams["id"]
-	w.Header().Set("Content-Type", "application/json")
+
 	var response model.ActionResponse
+
 	transaction, err := db.GetByID(transactionId)
 	if err != nil {
 		response.SetActionResponse(ErrorOccurredCode, err, nil, nil)
@@ -174,6 +173,7 @@ func SettleTransaction(w http.ResponseWriter, r *http.Request) {
 
 	transaction.Status = "settled"
 	transaction.UpdatedAt = time.Now()
+
 	err = db.Update(&transaction)
 	if err != nil {
 		response.SetActionResponse(ErrorOccurredCode, err, nil, nil)

@@ -2,8 +2,8 @@ package main
 
 import (
 	"mpp/internal/api"
+	"mpp/pkg/controller"
 	"mpp/pkg/db"
-	"mpp/pkg/transaction"
 )
 
 func main() {
@@ -12,7 +12,7 @@ func main() {
 		panic("failed to connect database")
 	}
 
-	go transaction.SetSettledAfter24Hours()
+	go controller.SetSettledAfter24Hours()
 
 	if err := api.Init(); err != nil {
 		panic("failed init")

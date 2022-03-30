@@ -3,6 +3,8 @@ package validpackage
 import "regexp"
 
 var (
+	amountregex = regexp.MustCompile("^[0-9]*$")
+
 	cardNumberRegex = regexp.MustCompile("^[0-9]{16}$")
 	holderNameRegex = regexp.MustCompile("^[\\D\\s]*[\\D\\s\\-',]*$")
 	expDateRegex    = regexp.MustCompile("[0-1][1-9]+/+[0-9]")

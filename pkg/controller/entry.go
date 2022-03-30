@@ -2,108 +2,103 @@ package controller
 
 import (
 	"encoding/json"
-	"mpp/pkg/model"
-	transaction2 "mpp/pkg/transaction"
-	"mpp/pkg/transaction/types"
-	validate "mpp/pkg/validate"
 	"net/http"
+
+	"mpp/pkg/model"
+	"mpp/pkg/transaction"
+	validator "mpp/pkg/validate"
 )
 
 func ProcessCreateTransaction(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 
-	var response model.TransactionResponse
-	var transaction model.Transaction
+	var responseModel model.TransactionResponse
+	var transactionModel model.Transaction
 
-	err := json.NewDecoder(r.Body).Decode(&transaction)
+	err := json.NewDecoder(r.Body).Decode(&transactionModel)
 	if err != nil {
-		response.SetTransactionResponse(nil, transaction2.ErrorOccurredCode, err)
+		responseModel.SetTransactionResponse(nil, ErrorOccurredCode, err)
 		w.WriteHeader(http.StatusInternalServerError)
-		json.NewEncoder(w).Encode(response)
+		json.NewEncoder(w).Encode(responseModel)
 		return
 	}
 
-	if err = validate.ValidatePaymentMethod(&transaction.PaymentMethod); err != nil {
-		response.SetTransactionResponse(nil, transaction2.ErrorOccurredCode, err)
+	//Validate incoming transaction request
+
+	if err = validator.ValidatePaymentMethod(&transactionModel.PaymentMethod); err != nil {
+		responseModel.SetTransactionResponse(nil, ErrorOccurredCode, err)
 		w.WriteHeader(http.StatusBadRequest)
-		json.NewEncoder(w).Encode(response)
+		json.NewEncoder(w).Encode(responseModel)
 		return
 	}
 
-	if transaction.PaymentMethod.CreditCard != nil {
-		transaction, err = types.CCTransaction(transaction)
-		if err != nil {
-			response.SetTransactionResponse(nil, correctResponseCode(err.Error()), err)
-			w.WriteHeader(http.StatusBadRequest)
-			json.NewEncoder(w).Encode(response)
-			return
-		}
-	}
-	if transaction.PaymentMethod.Ach != nil {
-		transaction, err = types.ACHTransaction(transaction)
-		if err != nil {
-			response.SetTransactionResponse(nil, correctResponseCode(err.Error()), err)
-			w.WriteHeader(http.StatusBadRequest)
-			json.NewEncoder(w).Encode(response)
-			return
-		}
-	}
-	if transaction.PaymentMethod.ApplePay != nil {
-		transaction, err = types.ApplePayTransaction(transaction)
-		if err != nil {
-			response.SetTransactionResponse(nil, correctResponseCode(err.Error()), err)
-			w.WriteHeader(http.StatusBadRequest)
-			json.NewEncoder(w).Encode(response)
-			return
-		}
-	}
-	if transaction.PaymentMethod.GooglePay != nil {
-		transaction, err = types.GooglePayTransaction(transaction)
-		if err != nil {
-			response.SetTransactionResponse(nil, correctResponseCode(err.Error()), err)
-			w.WriteHeader(http.StatusBadRequest)
-			json.NewEncoder(w).Encode(response)
-			return
-		}
-	}
-	if transaction.PaymentMethod.APM != nil {
-		transaction, err = types.APMTransaction(transaction)
-		if err != nil {
-			response.SetTransactionResponse(nil, correctResponseCode(err.Error()), err)
-			w.WriteHeader(http.StatusBadRequest)
-			json.NewEncoder(w).Encode(response)
-			return
-		}
-	}
-
-	if err != nil {
-		response.SetTransactionResponse(nil, transaction2.ErrorOccurredCode, err)
+	if err = validator.ValidateAddress(&transactionModel.BillingAddress); err != nil {
+		responseModel.SetTransactionResponse(nil, ErrorOccurredCode, err)
 		w.WriteHeader(http.StatusBadRequest)
-		json.NewEncoder(w).Encode(response)
+		json.NewEncoder(w).Encode(responseModel)
 		return
 	}
 
-	response.SetTransactionResponse(&transaction, transaction2.SuccessCode, nil)
-
-	json.NewEncoder(w).Encode(response)
-	if err != nil {
-		response.SetTransactionResponse(nil, transaction2.ErrorOccurredCode, err)
+	if err = validator.ValidateAmount(transactionModel.Amount); err != nil {
+		responseModel.SetTransactionResponse(nil, ErrorOccurredCode, err)
+		w.WriteHeader(http.StatusBadRequest)
+		json.NewEncoder(w).Encode(responseModel)
 		return
 	}
-}
 
-func correctResponseCode(message string) uint64 {
-	switch message {
-		case "fraud detected":
-			return transaction2.FraudDetectedCode
-		case "limit exceeded":
-			return transaction2.LimitExceededCode
-		case "daily limit exceeded":
-			return transaction2.DailyLimitExceededCode
-		case "card blocked":
-			return transaction2.CardBlockedCode
-		case "success":
-			return transaction2.SuccessCode
+	// Specify the type of the transaction
+
+	if transactionModel.PaymentMethod.CreditCard != nil {
+		transactionModel, err = transaction.CCTransaction(transactionModel)
+		if err != nil {
+			responseModel.SetTransactionResponse(nil, correctResponseCode(err.Error()), err)
+			w.WriteHeader(http.StatusBadRequest)
+			json.NewEncoder(w).Encode(responseModel)
+			return
+		}
 	}
-	return transaction2.ErrorOccurredCode
+
+	if transactionModel.PaymentMethod.Ach != nil {
+		transactionModel, err = transaction.ACHTransaction(transactionModel)
+		if err != nil {
+			responseModel.SetTransactionResponse(nil, correctResponseCode(err.Error()), err)
+			w.WriteHeader(http.StatusBadRequest)
+			json.NewEncoder(w).Encode(responseModel)
+			return
+		}
+	}
+
+	if transactionModel.PaymentMethod.ApplePay != nil {
+		transactionModel, err = transaction.ApplePayTransaction(transactionModel)
+		if err != nil {
+			responseModel.SetTransactionResponse(nil, correctResponseCode(err.Error()), err)
+			w.WriteHeader(http.StatusBadRequest)
+			json.NewEncoder(w).Encode(responseModel)
+			return
+		}
+	}
+
+	if transactionModel.PaymentMethod.GooglePay != nil {
+		transactionModel, err = transaction.GooglePayTransaction(transactionModel)
+		if err != nil {
+			responseModel.SetTransactionResponse(nil, correctResponseCode(err.Error()), err)
+			w.WriteHeader(http.StatusBadRequest)
+			json.NewEncoder(w).Encode(responseModel)
+			return
+		}
+	}
+
+	if transactionModel.PaymentMethod.APM != nil {
+		transactionModel, err = transaction.APMTransaction(transactionModel)
+		if err != nil {
+			responseModel.SetTransactionResponse(nil, correctResponseCode(err.Error()), err)
+			w.WriteHeader(http.StatusBadRequest)
+			json.NewEncoder(w).Encode(responseModel)
+			return
+		}
+	}
+
+	responseModel.SetTransactionResponse(&transactionModel, SuccessCode, nil)
+
+	json.NewEncoder(w).Encode(responseModel)
 }
