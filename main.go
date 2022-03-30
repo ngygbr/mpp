@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"mpp/internal/api"
 	utils "mpp/pkg/config"
 	"mpp/pkg/controller"
@@ -9,9 +8,7 @@ import (
 )
 
 func main() {
-
-	xd := utils.GetConfig()
-	fmt.Println(xd)
+	utils.LogConfig()
 
 	if _, err := db.Connect("/tmp"); err != nil {
 		panic("failed to connect database")
