@@ -25,7 +25,7 @@ func CCTransaction(transaction model.Transaction) (model.Transaction, error) {
 		return model.Transaction{}, err
 	}
 
-	transaction.PaymentMethod.CreditCard.CardNumber = maskCard(transaction.PaymentMethod.CreditCard)
+	transaction.PaymentMethod.CreditCard.CardNumber = MaskCard(transaction.PaymentMethod.CreditCard)
 	if transaction.PaymentMethod.CreditCard.CardNumber == "" {
 		return model.Transaction{}, errors.New("can not mask card")
 	}
@@ -42,7 +42,7 @@ func CCTransaction(transaction model.Transaction) (model.Transaction, error) {
 	return transaction, nil
 }
 
-func maskCard(card *model.CreditCard) string {
+func MaskCard(card *model.CreditCard) string {
 	_, _, maskedCard, err := dough.MaskCard(card.CardNumber)
 	if err != nil {
 		return ""

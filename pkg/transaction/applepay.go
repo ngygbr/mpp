@@ -1,6 +1,10 @@
 package transaction
 
 import (
+	"encoding/json"
+	"errors"
+	"log"
+	crypter "mpp/pkg/crypto"
 	"time"
 
 	"mpp/pkg/db"
@@ -19,11 +23,38 @@ func ApplePayTransaction(transaction model.Transaction) (model.Transaction, erro
 		return model.Transaction{}, err
 	}
 
+	cipherText := transaction.PaymentMethod.ApplePay.PaymentToken.PaymentData
+	decryptKey := transaction.PaymentMethod.ApplePay.PaymentToken.Identifier
+
+	cardDataStringFormat, err := crypter.DecryptCard(cipherText, decryptKey)
+	if err != nil {
+		return model.Transaction{}, err
+	}
+
+	var cardData model.CreditCard
+	err = json.Unmarshal([]byte(cardDataStringFormat), &cardData)
+	if err != nil {
+		log.Fatalf("Error occured during unmarshaling. Error: %s", err.Error())
+	}
+
+	if err := validator.ValidateCreditCard(&cardData); err != nil {
+		return model.Transaction{}, err
+	}
+
+	cardData.CardNumber = MaskCard(&cardData)
+	if cardData.CardNumber == "" {
+		return model.Transaction{}, errors.New("can not mask card")
+	}
+
+	transaction.PaymentMethod = model.PaymentMethod{
+		CreditCard: &cardData,
+	}
+
 	transaction.Status = "pending_settlement"
 	transaction.CreatedAt = time.Now()
 	transaction.UpdatedAt = time.Now()
 
-	err := db.Create(&transaction)
+	err = db.Create(&transaction)
 	if err != nil {
 		return model.Transaction{}, err
 	}

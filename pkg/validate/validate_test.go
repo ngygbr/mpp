@@ -304,7 +304,7 @@ func TestValidatePaymentMethod(t *testing.T) {
 		},false},
 		{"valid apple pay payment method", &model.PaymentMethod{
 			ApplePay: &model.ApplePay{
-				Token: "oadsfkladsaklfaaasdldsa",
+				PamentToken: "oadsfkladsaklfaaasdldsa",
 			},
 		},false},
 		{"valid google pay payment method", &model.PaymentMethod{
@@ -334,7 +334,7 @@ func TestValidatePaymentMethod(t *testing.T) {
 				CVC:            "444",
 			},
 			ApplePay: &model.ApplePay{
-				Token: "oadsfkladsaklfaaasdldsa",
+				PamentToken: "oadsfkladsaklfaaasdldsa",
 			},
 		},true},
 		{"invalid ach and google pay payment method", &model.PaymentMethod{

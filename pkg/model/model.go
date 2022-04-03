@@ -46,7 +46,7 @@ type Ach struct {
 }
 
 type ApplePay struct {
-	Token string `json:"token"`
+	PaymentToken PaymentToken `json:"payment_token"`
 }
 
 type GooglePay struct {
@@ -58,9 +58,14 @@ type APM struct {
 }
 
 type TestRequest struct {
-	Method       string
-	Path         string
-	APIKey       string
-	ContentType  string
-	Body         interface{}
+	Method      string
+	Path        string
+	APIKey      string
+	ContentType string
+	Body        interface{}
+}
+
+type PaymentToken struct {
+	Identifier  string `json:"identifier"`
+	PaymentData string `json:"payment_data"`
 }

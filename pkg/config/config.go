@@ -64,6 +64,6 @@ func setAfterFlags() {
 
 func LogConfig() {
 	conf := GetConfig()
-	s := fmt.Sprintf("SIGN_KEY=%s; PORT=%s; DISABLE_FRAUD_DETECTION=%v; DISABLE_LIMIT=%v; DISABLE_DAILY_LIMIT=%v", conf.SignKey, conf.Port, conf.DisableFraudDetection, conf.DisableLimit, conf.DisableDailyLimit)
+	s := fmt.Sprintf("DISABLE_FRAUD_DETECTION=%v; DISABLE_LIMIT=%v; DISABLE_DAILY_LIMIT=%v", conf.DisableFraudDetection, conf.DisableLimit, conf.DisableDailyLimit)
 	fmt.Println(s)
 }
