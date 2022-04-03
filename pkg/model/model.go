@@ -50,7 +50,7 @@ type ApplePay struct {
 }
 
 type GooglePay struct {
-	Signature string `json:"signature"`
+	EncryptedPayment EncryptedPayment `json:"encrypted_payment"`
 }
 
 type APM struct {
@@ -67,5 +67,10 @@ type TestRequest struct {
 
 type PaymentToken struct {
 	Identifier  string `json:"identifier"`
+	PaymentData string `json:"payment_data"`
+}
+
+type EncryptedPayment struct {
+	PaymentID   string `json:"payment_id"`
 	PaymentData string `json:"payment_data"`
 }

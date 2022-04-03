@@ -1,6 +1,10 @@
 package transaction
 
 import (
+	"encoding/json"
+	"errors"
+	"log"
+	crypter "mpp/pkg/crypto"
 	"time"
 
 	"mpp/pkg/db"
@@ -19,15 +23,38 @@ func GooglePayTransaction(transaction model.Transaction) (model.Transaction, err
 		return model.Transaction{}, err
 	}
 
-	if err := validator.ValidateAddress(&transaction.BillingAddress); err != nil {
+	cipherText := transaction.PaymentMethod.GooglePay.EncryptedPayment.PaymentData
+	decryptKey := transaction.PaymentMethod.GooglePay.EncryptedPayment.PaymentID
+
+	cardDataStringFormat, err := crypter.DecryptCard(cipherText, decryptKey)
+	if err != nil {
 		return model.Transaction{}, err
+	}
+
+	var cardData model.CreditCard
+	err = json.Unmarshal([]byte(cardDataStringFormat), &cardData)
+	if err != nil {
+		log.Fatalf("Error occured during unmarshaling. Error: %s", err.Error())
+	}
+
+	if err := validator.ValidateCreditCard(&cardData); err != nil {
+		return model.Transaction{}, err
+	}
+
+	cardData.CardNumber = MaskCard(&cardData)
+	if cardData.CardNumber == "" {
+		return model.Transaction{}, errors.New("can not mask card")
+	}
+
+	transaction.PaymentMethod = model.PaymentMethod{
+		CreditCard: &cardData,
 	}
 
 	transaction.Status = "pending_settlement"
 	transaction.CreatedAt = time.Now()
 	transaction.UpdatedAt = time.Now()
 
-	err := db.Create(&transaction)
+	err = db.Create(&transaction)
 	if err != nil {
 		return model.Transaction{}, err
 	}

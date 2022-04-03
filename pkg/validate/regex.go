@@ -25,4 +25,6 @@ var (
 	achRoutingRegex     = regexp.MustCompile("\\A([0-9]{9})\\z")
 	achAccountRegex     = regexp.MustCompile("\\A([0-9]{4,17})\\z")
 	achAccountTypeRegex = regexp.MustCompile("checking|savings")
+
+	keyAES256Regex = regexp.MustCompile("([0-9a-zA-Z]{64})")
 )

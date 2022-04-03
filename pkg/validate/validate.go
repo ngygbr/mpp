@@ -96,10 +96,28 @@ func ValidateAch(ach *model.Ach) error {
 }
 
 func ValidateApplePay(ap *model.ApplePay) error {
+
+	if !keyAES256Regex.Match([]byte(ap.PaymentToken.Identifier)) {
+		return errors.New("invalid identifier")
+	}
+
+	if ap.PaymentToken.PaymentData == "" {
+		return errors.New("invalid encrypted data")
+	}
+
 	return nil
 }
 
 func ValidateGooglePay(gp *model.GooglePay) error {
+
+	if !keyAES256Regex.Match([]byte(gp.EncryptedPayment.PaymentID)) {
+		return errors.New("invalid identifier")
+	}
+
+	if gp.EncryptedPayment.PaymentData == "" {
+		return errors.New("invalid encrypted data")
+	}
+
 	return nil
 }
 
