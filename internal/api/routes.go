@@ -1,10 +1,7 @@
 package api
 
 import (
-	"embed"
 	"fmt"
-	"io/fs"
-	"log"
 	"net/http"
 
 	"mpp/pkg/auth"
@@ -18,18 +15,10 @@ import (
 )
 
 var config = configuration.GetConfig()
-var nextFS embed.FS
 
 func Init() error {
 
-	distFS, err := fs.Sub(nextFS, "nextjs/dist")
-	if err != nil {
-		log.Fatal(err)
-	}
-
 	r := mux.NewRouter()
-
-	r.PathPrefix("/").Handler(http.FileServer(http.FS(distFS)))
 
 	a := r.PathPrefix("/api").Subrouter()
 	a.Use(authMiddleware)
@@ -49,7 +38,7 @@ func Init() error {
 	a.HandleFunc("/transaction/applepay", controller.ProcessCreateTransaction).Methods("POST")
 	a.HandleFunc("/transaction/googlepay", controller.ProcessCreateTransaction).Methods("POST")
 
-	err = http.ListenAndServe(":"+config.Port, r)
+	err := http.ListenAndServe(":"+config.Port, r)
 	if err != nil {
 		return err
 	}

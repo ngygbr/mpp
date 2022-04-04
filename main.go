@@ -7,8 +7,6 @@ import (
 	"mpp/pkg/db"
 )
 
-
-
 func main() {
 
 	utils.LogConfig()

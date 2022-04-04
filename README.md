@@ -4,7 +4,28 @@ Mock Payment Processor written in GO for simulate the lifecycle of a transaction
 
 <br>
 
-# API Docs
+## Usage
+
+From the repository root directory, generate the static HTML export of the Next.js
+app, and build the Go binary:
+
+```sh
+$ cd nextjs
+$ npm install
+$ npm run export
+$ cd ..
+$ go build .
+```
+
+Then run the binary:
+
+```sh
+$ ./main
+
+2022/04/01 14:55:38 Starting HTTP server at http://localhost:8080 ...
+```
+
+## API Docs
 
 Documentation of the API
 
