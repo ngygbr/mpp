@@ -6,16 +6,7 @@ Mock Payment Processor written in GO for simulate the lifecycle of a transaction
 
 ## Usage
 
-From the repository root directory, generate the static HTML export of the Next.js
-app, and build the Go binary:
-
-```sh
-$ cd nextjs
-$ npm install
-$ npm run export
-$ cd ..
-$ go build .
-```
+...
 
 Then run the binary:
 
