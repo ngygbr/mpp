@@ -8,10 +8,10 @@ require (
 	github.com/fluidpay/dough v0.4.3
 	github.com/gorilla/mux v1.8.0
 	github.com/pkg/errors v0.9.1
+	github.com/rs/cors v1.8.2
 	github.com/rs/xid v1.3.0
 	github.com/spf13/viper v1.10.1
 	github.com/stretchr/testify v1.7.1
-	github.com/trubitsyn/go-zero-width v1.0.1
 )
 
 require (
@@ -43,6 +43,7 @@ require (
 	github.com/stretchr/objx v0.1.0 // indirect
 	github.com/subosito/gotenv v1.2.0 // indirect
 	github.com/tailscale/hujson v0.0.0-20211215203138-ffd971c5f362 // indirect
+	github.com/trubitsyn/go-zero-width v1.0.1 // indirect
 	go.opencensus.io v0.23.0 // indirect
 	golang.org/x/crypto v0.0.0-20220131195533-30dcbda58838 // indirect
 	golang.org/x/net v0.0.0-20211112202133-69e39bad7dc2 // indirect

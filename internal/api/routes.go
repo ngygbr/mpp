@@ -2,6 +2,7 @@ package api
 
 import (
 	"fmt"
+	"github.com/rs/cors"
 	"net/http"
 
 	"mpp/pkg/auth"
@@ -17,6 +18,11 @@ import (
 var config = configuration.GetConfig()
 
 func Init() error {
+
+	c := cors.New(cors.Options{
+		AllowedOrigins: []string{"*"},
+		AllowedMethods: []string{"GET", "POST", "DELETE"},
+	})
 
 	r := mux.NewRouter()
 
@@ -38,7 +44,7 @@ func Init() error {
 	a.HandleFunc("/transaction/applepay", controller.ProcessCreateTransaction).Methods("POST")
 	a.HandleFunc("/transaction/googlepay", controller.ProcessCreateTransaction).Methods("POST")
 
-	err := http.ListenAndServe(":"+config.Port, r)
+	err := http.ListenAndServe(":"+config.Port, c.Handler(r))
 	if err != nil {
 		return err
 	}
