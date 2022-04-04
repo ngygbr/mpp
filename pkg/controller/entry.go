@@ -88,16 +88,6 @@ func ProcessCreateTransaction(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	if transactionModel.PaymentMethod.APM != nil {
-		transactionModel, err = transaction.APMTransaction(transactionModel)
-		if err != nil {
-			responseModel.SetTransactionResponse(nil, correctResponseCode(err.Error()), err)
-			w.WriteHeader(http.StatusBadRequest)
-			json.NewEncoder(w).Encode(responseModel)
-			return
-		}
-	}
-
 	responseModel.SetTransactionResponse(&transactionModel, SuccessCode, nil)
 
 	json.NewEncoder(w).Encode(responseModel)

@@ -174,31 +174,25 @@ func ValidatePaymentMethodType(paymentMethodType string) error {
 
 func ValidatePaymentMethod(paymentMethod *model.PaymentMethod) error {
 	if paymentMethod.CreditCard != nil {
-		if paymentMethod.Ach != nil || paymentMethod.ApplePay != nil || paymentMethod.GooglePay != nil || paymentMethod.APM != nil {
+		if paymentMethod.Ach != nil || paymentMethod.ApplePay != nil || paymentMethod.GooglePay != nil {
 			return errors.New("only one payment method is allowed")
 		}
 	}
 
 	if paymentMethod.Ach != nil {
-		if paymentMethod.CreditCard != nil || paymentMethod.ApplePay != nil || paymentMethod.GooglePay != nil || paymentMethod.APM != nil {
+		if paymentMethod.CreditCard != nil || paymentMethod.ApplePay != nil || paymentMethod.GooglePay != nil {
 			return errors.New("only one payment method is allowed")
 		}
 	}
 
 	if paymentMethod.ApplePay != nil {
-		if paymentMethod.Ach != nil || paymentMethod.CreditCard != nil || paymentMethod.GooglePay != nil || paymentMethod.APM != nil {
+		if paymentMethod.Ach != nil || paymentMethod.CreditCard != nil || paymentMethod.GooglePay != nil {
 			return errors.New("only one payment method is allowed")
 		}
 	}
 
 	if paymentMethod.GooglePay != nil {
-		if paymentMethod.Ach != nil || paymentMethod.ApplePay != nil || paymentMethod.CreditCard != nil || paymentMethod.APM != nil {
-			return errors.New("only one payment method is allowed")
-		}
-	}
-
-	if paymentMethod.APM != nil {
-		if paymentMethod.Ach != nil || paymentMethod.ApplePay != nil || paymentMethod.GooglePay != nil || paymentMethod.CreditCard != nil {
+		if paymentMethod.Ach != nil || paymentMethod.ApplePay != nil || paymentMethod.CreditCard != nil {
 			return errors.New("only one payment method is allowed")
 		}
 	}

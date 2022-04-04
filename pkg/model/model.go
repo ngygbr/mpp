@@ -18,7 +18,6 @@ type PaymentMethod struct {
 	Ach        *Ach        `json:"ach,omitempty"`
 	ApplePay   *ApplePay   `json:"apple_pay,omitempty"`
 	GooglePay  *GooglePay  `json:"google_pay,omitempty"`
-	APM        *APM        `json:"apm,omitempty"`
 }
 
 type Address struct {
@@ -51,10 +50,6 @@ type ApplePay struct {
 
 type GooglePay struct {
 	EncryptedPayment EncryptedPayment `json:"encrypted_payment"`
-}
-
-type APM struct {
-	Type string `json:"type"`
 }
 
 type TestRequest struct {
