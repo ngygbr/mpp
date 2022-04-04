@@ -24,7 +24,7 @@ func Init() error {
 	a.Use(authMiddleware)
 
 	r.HandleFunc("/healthcheck", healthcheck.HealthCheck).Methods("GET")
-	r.HandleFunc("/login", auth.Login).Methods("POST")
+	r.HandleFunc("/login", auth.Login).Methods("GET")
 
 	a.HandleFunc("/transaction/{id}", controller.ProcessGetTransactionByID).Methods("GET")
 	a.HandleFunc("/transaction/{id}", controller.ProcessDeleteTransaction).Methods("DELETE")

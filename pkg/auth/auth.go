@@ -1,6 +1,8 @@
 package auth
 
 import (
+	"crypto/rand"
+	"encoding/hex"
 	"encoding/json"
 	"net/http"
 	"time"
@@ -8,28 +10,20 @@ import (
 	configuration "mpp/pkg/config"
 
 	"github.com/dgrijalva/jwt-go"
-	"github.com/pkg/errors"
 )
 
 type User struct {
-	Name  string `json:"name"`
 	Token string `json:"token"`
 }
 
 var config = configuration.GetConfig()
 
-func Login(w http.ResponseWriter, r *http.Request) {
+func Login(w http.ResponseWriter, _ *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 
 	var user User
 
-	err := json.NewDecoder(r.Body).Decode(&user)
-	if err != nil {
-		w.WriteHeader(http.StatusForbidden)
-		return
-	}
-
-	token, err := generateJWT(user.Name)
+	token, err := generateJWT()
 	if err != nil {
 		w.WriteHeader(http.StatusForbidden)
 		return
@@ -46,16 +40,19 @@ func Login(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusOK)
 }
 
-func generateJWT(username string) (string, error) {
+func generateJWT() (string, error) {
 	token := jwt.New(jwt.SigningMethodHS256)
 
 	claims := token.Claims.(jwt.MapClaims)
 
-	if username == "" {
-		return "", errors.New("invalid username")
+	bytes := make([]byte, 32)
+	if _, err := rand.Read(bytes); err != nil {
+		return "", err
 	}
 
-	claims["user"] = username
+	hexadec := hex.EncodeToString(bytes)
+
+	claims["user"] = hexadec
 	claims["exp"] = time.Now().Add(time.Minute * 5).Unix()
 
 	tokenString, err := token.SignedString([]byte(config.SignKey))
