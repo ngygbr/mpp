@@ -304,12 +304,18 @@ func TestValidatePaymentMethod(t *testing.T) {
 		},false},
 		{"valid apple pay payment method", &model.PaymentMethod{
 			ApplePay: &model.ApplePay{
-				PamentToken: "oadsfkladsaklfaaasdldsa",
+				PaymentToken: model.PaymentToken{
+					Identifier:  "484d1cf96c8409e02c4c71276f265b65b8329bc1f8438cf66c08c975a7d4b84a",
+					PaymentData: "38041f2368c5118806ed23951fe0f166e2f64099b6f6be495f5fbb248a154a0bf11e11a4bc47749d3e589eaeb59b428ae6b04ea1563140d5ef2118f623da8fdd06ed4c323560303d7ff1d15a5aacf6e93d9083fa21903ab5de65adbc3667a08cbe2cecb5beebbbe11cbdbebccad0d7e91d8f561f02466ffb70",
+				},
 			},
 		},false},
 		{"valid google pay payment method", &model.PaymentMethod{
 			GooglePay: &model.GooglePay{
-				Signature: "oadsfkladsaklfaaasdldsa",
+				EncryptedPayment: model.EncryptedPayment{
+					PaymentID:   "484d1cf96c8409e02c4c71276f265b65b8329bc1f8438cf66c08c975a7d4b84a",
+					PaymentData: "38041f2368c5118806ed23951fe0f166e2f64099b6f6be495f5fbb248a154a0bf11e11a4bc47749d3e589eaeb59b428ae6b04ea1563140d5ef2118f623da8fdd06ed4c323560303d7ff1d15a5aacf6e93d9083fa21903ab5de65adbc3667a08cbe2cecb5beebbbe11cbdbebccad0d7e91d8f561f02466ffb70",
+				},
 			},
 		},false},
 		{"invalid cc and ach payment method", &model.PaymentMethod{
@@ -334,7 +340,10 @@ func TestValidatePaymentMethod(t *testing.T) {
 				CVC:            "444",
 			},
 			ApplePay: &model.ApplePay{
-				PamentToken: "oadsfkladsaklfaaasdldsa",
+				PaymentToken: model.PaymentToken{
+					Identifier:  "",
+					PaymentData: "",
+				},
 			},
 		},true},
 		{"invalid ach and google pay payment method", &model.PaymentMethod{
@@ -345,7 +354,10 @@ func TestValidatePaymentMethod(t *testing.T) {
 				SECCode:       "web",
 			},
 			GooglePay: &model.GooglePay{
-				Signature: "oadsfkladsaklfaaasdldsa",
+				EncryptedPayment: model.EncryptedPayment{
+					PaymentID:   "484d1cf96c8409e02c4c71276f265b65b8329bc1f8438cf66c08c975a7d4b84a",
+					PaymentData: "",
+				},
 			},
 		},true},
 	}
@@ -353,6 +365,74 @@ func TestValidatePaymentMethod(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			if err := ValidatePaymentMethod(tt.paymentMethod); (err != nil) != tt.wantErr {
 				t.Errorf("ValidatePaymentMethod() error = %v, wantErr %v", err, tt.wantErr)
+			}
+		})
+	}
+}
+
+func TestValidateApplePay(t *testing.T) {
+	tests := []struct {
+		name    string
+		ap *model.ApplePay
+		wantErr bool
+	}{
+		{"Valid apple pay", &model.ApplePay{
+			PaymentToken: model.PaymentToken{
+				Identifier:  "484d1cf96c8409e02c4c71276f265b65b8329bc1f8438cf66c08c975a7d4b84a",
+				PaymentData: "38041f2368c5118806ed23951fe0f166e2f64099b6f6be495f5fbb248a154a0bf11e11a4bc47749d3e589eaeb59b428ae6b04ea1563140d5ef2118f623da8fdd06ed4c323560303d7ff1d15a5aacf6e93d9083fa21903ab5de65adbc3667a08cbe2cecb5beebbbe11cbdbebccad0d7e91d8f561f02466ffb70",
+			},
+		}, false},
+		{"Invalid apple pay identifier", &model.ApplePay{
+			PaymentToken: model.PaymentToken{
+				Identifier:  "",
+				PaymentData: "38041f2368c5118806ed23951fe0f166e2f64099b6f6be495f5fbb248a154a0bf11e11a4bc47749d3e589eaeb59b428ae6b04ea1563140d5ef2118f623da8fdd06ed4c323560303d7ff1d15a5aacf6e93d9083fa21903ab5de65adbc3667a08cbe2cecb5beebbbe11cbdbebccad0d7e91d8f561f02466ffb70",
+			},
+		}, false},
+		{"Inalid apple pay paymentData", &model.ApplePay{
+			PaymentToken: model.PaymentToken{
+				Identifier:  "484d1cf96c8409e02c4c71276f265b65b8329bc1f8438cf66c08c975a7d4b84a",
+				PaymentData: "",
+			},
+		}, false},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if err := ValidateApplePay(tt.ap); (err != nil) != tt.wantErr {
+				t.Errorf("ValidateApplePay() error = %v, wantErr %v", err, tt.wantErr)
+			}
+		})
+	}
+}
+
+func TestValidateGooglePay(t *testing.T) {
+	tests := []struct {
+		name    string
+		gp *model.GooglePay
+		wantErr bool
+	}{
+		{"Valid google pay", &model.GooglePay{
+			EncryptedPayment: model.EncryptedPayment{
+				PaymentID:   "484d1cf96c8409e02c4c71276f265b65b8329bc1f8438cf66c08c975a7d4b84a",
+				PaymentData: "38041f2368c5118806ed23951fe0f166e2f64099b6f6be495f5fbb248a154a0bf11e11a4bc47749d3e589eaeb59b428ae6b04ea1563140d5ef2118f623da8fdd06ed4c323560303d7ff1d15a5aacf6e93d9083fa21903ab5de65adbc3667a08cbe2cecb5beebbbe11cbdbebccad0d7e91d8f561f02466ffb70",
+			},
+		}, false},
+		{"Invalid google pay payment id", &model.GooglePay{
+			EncryptedPayment: model.EncryptedPayment{
+				PaymentID:   "",
+				PaymentData: "38041f2368c5118806ed23951fe0f166e2f64099b6f6be495f5fbb248a154a0bf11e11a4bc47749d3e589eaeb59b428ae6b04ea1563140d5ef2118f623da8fdd06ed4c323560303d7ff1d15a5aacf6e93d9083fa21903ab5de65adbc3667a08cbe2cecb5beebbbe11cbdbebccad0d7e91d8f561f02466ffb70",
+			},
+		}, false},
+		{"Invalid google pay payment data", &model.GooglePay{
+			EncryptedPayment: model.EncryptedPayment{
+				PaymentID:   "484d1cf96c8409e02c4c71276f265b65b8329bc1f8438cf66c08c975a7d4b84a",
+				PaymentData: "",
+			},
+		}, false},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if err := ValidateGooglePay(tt.gp); (err != nil) != tt.wantErr {
+				t.Errorf("ValidateGooglePay() error = %v, wantErr %v", err, tt.wantErr)
 			}
 		})
 	}

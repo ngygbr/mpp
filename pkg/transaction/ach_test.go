@@ -51,7 +51,6 @@ func TestACHTransaction(t *testing.T) {
 			assert.NotZero(t, got.UpdatedAt)
 
 			assert.Equal(t, uint64(10000), got.Amount)
-			assert.Equal(t, tt.args.transaction.PaymentMethod, got.PaymentMethod)
 			assert.Equal(t, tt.args.transaction.BillingAddress, got.BillingAddress)
 		})
 	}
