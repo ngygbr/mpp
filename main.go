@@ -7,7 +7,10 @@ import (
 	"mpp/pkg/db"
 )
 
+
+
 func main() {
+
 	utils.LogConfig()
 
 	if _, err := db.Connect("/tmp"); err != nil {
