@@ -13,7 +13,8 @@ import {
     GridItem,
     Spinner,
     Text,
-    useDisclosure
+    useDisclosure,
+    Tabs, TabList, TabPanels, Tab, TabPanel
 } from '@chakra-ui/react'
 import useSWR from 'swr'
 import axios from "axios";
@@ -21,6 +22,7 @@ import Cookies from "js-cookie";
 import {ReactNode, useEffect, useState} from "react";
 import jwtDecode, {JwtPayload} from "jwt-decode";
 import Card from "../components/card";
+import CreditCard from "../components/creditCard"
 
 const Home: NextPage = () => {
     const [token, setToken] = useState("")
@@ -100,8 +102,41 @@ const Home: NextPage = () => {
                 </Flex>
             </Box>
 
-            <Container maxW='container.xl'>
-                TODO
+            <Container
+                maxW='container.xl'
+                py={"4rem"}
+            >
+                <Flex
+                    px={"2rem"}
+                    w={"full"}
+                    h={"full"}
+                    direction={"column"}
+                    justifyContent={"flex-start"}
+                    alignItems={"center"}
+                >
+                    <Tabs isFitted variant='unstyled' w={"full"}>
+                        <TabList gap={8} marginBottom={"4rem"}>
+                            <Tab fontWeight={"600"} color={"brand.100"} bg={"brand.200"} borderRadius={"md"} _selected={{ color: 'brand.100', bg: 'brand.hover' }}>Credit Card</Tab>
+                            <Tab fontWeight={"600"} color={"brand.100"} bg={"brand.200"} borderRadius={"md"} _selected={{ color: 'brand.100', bg: 'brand.hover' }}>Ach</Tab>
+                            <Tab fontWeight={"600"} color={"brand.100"} bg={"brand.200"} borderRadius={"md"} _selected={{ color: 'brand.100', bg: 'brand.hover' }}>Apple Pay</Tab>
+                            <Tab fontWeight={"600"} color={"brand.100"} bg={"brand.200"} borderRadius={"md"} _selected={{ color: 'brand.100', bg: 'brand.hover' }}>Google Pay</Tab>
+                        </TabList>
+                        <TabPanels>
+                            <TabPanel bg={"brand.300"} color={"brand.100"}>
+                                <CreditCard token={token} />
+                            </TabPanel>
+                            <TabPanel bg={"brand.300"} color={"brand.100"}>
+                                <p>ACH</p>
+                            </TabPanel>
+                            <TabPanel bg={"brand.300"} color={"brand.100"}>
+                                <p>AP</p>
+                            </TabPanel>
+                            <TabPanel bg={"brand.300"} color={"brand.100"}>
+                                <p>GP</p>
+                            </TabPanel>
+                        </TabPanels>
+                    </Tabs>
+                </Flex>
 
             </Container>
 
