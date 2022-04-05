@@ -38,11 +38,12 @@ func Init() error {
 	a.HandleFunc("/transactions", controller.ProcessDeleteAllTransactions).Methods("DELETE")
 
 	a.HandleFunc("/transaction/creditcard", controller.ProcessCreateTransaction).Methods("POST")
+
 	a.HandleFunc("/transaction/ach", controller.ProcessCreateTransaction).Methods("POST")
 	a.HandleFunc("/transaction/applepay", controller.ProcessCreateTransaction).Methods("POST")
 	a.HandleFunc("/transaction/googlepay", controller.ProcessCreateTransaction).Methods("POST")
 
-	headersOk := handlers.AllowedHeaders([]string{"X-Requested-With", "X-CSRF-Token", "Accept", "Content-Type", "Content-Length", "Accept-Encoding", "Authorization"})
+	headersOk := handlers.AllowedHeaders([]string{"X-Requested-With", "Accept", "X-CSRF-Token", "Accept", "Content-Type", "Content-Length", "Accept-Encoding", "Authorization"})
 	originsOk := handlers.AllowedOrigins([]string{"*"})
 	methodsOk := handlers.AllowedMethods([]string{"GET", "HEAD", "POST", "PUT", "OPTIONS", "DELETE"})
 

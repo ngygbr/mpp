@@ -14,7 +14,7 @@ import {
     Spinner,
     Text,
     useDisclosure,
-    Tabs, TabList, TabPanels, Tab, TabPanel
+    Tabs, TabList, TabPanels, Tab, TabPanel, IconButton
 } from '@chakra-ui/react'
 import useSWR from 'swr'
 import axios from "axios";
@@ -23,6 +23,8 @@ import {ReactNode, useEffect, useState} from "react";
 import jwtDecode, {JwtPayload} from "jwt-decode";
 import Card from "../components/card";
 import CreditCard from "../components/creditCard"
+import ACH from "../components/ach";
+import { MdRefresh } from 'react-icons/md'
 
 const Home: NextPage = () => {
     const [token, setToken] = useState("")
@@ -45,17 +47,47 @@ const Home: NextPage = () => {
         setTokenExp(decoded.exp)
     }
 
-    useEffect(() => {
+    function isExpired(expD: number | undefined) {
         if (tokenExp) {
-            const expDate = new Date(1000 * tokenExp)
-            const now = new Date(Date.now())
-
-            if (expDate < now) {
-                setToken("");
-                Cookies.remove('mpp.AuthToken')
+            if (new Date(1000 * tokenExp) < new Date(Date.now())) {
+                return true
+            } else {
+                return false
             }
         }
-    }, [token]);
+    }
+
+    const ExpTokenCard = ({ children }: { children: ReactNode }) => (
+        <Flex
+            direction={"row"}
+            justifyContent={"space-between"}
+            alignItems={"center"}
+        >
+            <Box
+                px={'20px'}
+                py={'10px'}
+                rounded={'md'}
+                bg={'brand.200'}
+                color={'brand.rejected'}
+                maxW={'300px'}
+                overflow={'hidden'}
+                whiteSpace={'nowrap'}
+                textOverflow={'ellipsis'}
+            >
+                {children}
+            </Box>
+            <IconButton
+                aria-label='refresh-token'
+                icon={<MdRefresh />}
+                bg={"brand.200"}
+                color={"brand.100"}
+                _hover={
+                    {bg: "brand.hover"}
+                }
+                onClick={getToken}
+            />
+        </Flex>
+    );
 
     const { data, error } = useSWR(token, token => fetcher(token))
 
@@ -75,7 +107,10 @@ const Home: NextPage = () => {
                     justifyContent={'space-between'}
                 >
                     {token ?
-                        <TokenCard>{token}</TokenCard>
+                        isExpired(tokenExp) ?
+                            <ExpTokenCard>{token}</ExpTokenCard>
+                            :
+                            <TokenCard>{token}</TokenCard>
                         :
                         <Button
                             onClick={getToken}
@@ -126,7 +161,7 @@ const Home: NextPage = () => {
                                 <CreditCard token={token} />
                             </TabPanel>
                             <TabPanel bg={"brand.300"} color={"brand.100"}>
-                                <p>ACH</p>
+                                <ACH token={token} />
                             </TabPanel>
                             <TabPanel bg={"brand.300"} color={"brand.100"}>
                                 <p>AP</p>
@@ -171,7 +206,10 @@ const Home: NextPage = () => {
                                         </GridItem>
                                     ))
                                     :
-                                    <Text>No transactions yet...</Text>
+                                    isExpired(tokenExp) ?
+                                        <Text>Token is expired</Text>
+                                        :
+                                        <Text>No transactions yet...</Text>
                                 }
                             </Grid>
                             :
@@ -209,21 +247,3 @@ const TokenCard = ({ children }: { children: ReactNode }) => (
         {children}
     </Box>
 );
-
-const dummyT = [
-    {"id":"c95l5iu49b3jj2kuu990","status":"settled","payment_method_type":"creditcard","payment_method":{"credit_card":{"card_number":"544416******3444","holder_name":"John Lécci","exp_date":"05/25","cvc":"444"}},"amount":11111,"billing_address":{"first_name":"John","last_name":"Doe","postal_code":"1111","city":"Szeged","address_line_1":"Example street 69.","email":"example@github.com","phone":"5555555555"},"created_at":"2022-04-04T22:19:23.997539+02:00","updated_at":"2022-04-04T22:19:23.997539+02:00"}
-]
-
-function printValues(obj: { [x: string]: any; }, arr: Array<string>) {
-
-    for (const key in obj) {
-        if (typeof obj[key] === "object") {
-            printValues(obj[key], arr);
-        } else {
-            arr.push(obj[key])
-        }
-    }
-
-    console.log(arr)
-    return arr
-}

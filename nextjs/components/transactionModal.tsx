@@ -10,7 +10,7 @@ import {
     ModalHeader,
     ModalOverlay,
     Stack, Tag,
-    Text
+    Text, useToast
 } from "@chakra-ui/react";
 import React, {PropsWithChildren} from "react";
 import axios from "axios";
@@ -43,23 +43,118 @@ type Props = {
 
 const TransactionModal = ( {token, isOpened,closeModal,transaction}: PropsWithChildren<Props>) => {
 
-    const settleTransaction = () => axios.get('http://localhost:8080/api/transaction/'+ transaction.id + '/settle', {
-        headers: {
-            "Authorization": token
-        }
-    })
+    const toast = useToast()
 
-    const rejectTransaction = () => axios.get('http://localhost:8080/api/transaction/'+ transaction.id + '/reject', {
-        headers: {
-            "Authorization": token
+    const settleTransaction = async () => {
+        try {
+            const resp = await axios.get('http://localhost:8080/api/transaction/'+ transaction.id + '/settle', {
+                headers: {
+                    "Authorization": token
+                }
+            })
+            if (resp.status == 200) {
+                toast({
+                    title: resp.data.message,
+                    status: "success",
+                    isClosable: true,
+                })
+            } else {
+                toast({
+                    title: resp.data.message,
+                    status: "error",
+                    isClosable: true,
+                })
+            }
+        } catch (error: any) {
+            if (error.response){
+                toast({
+                    title: error.response.data.message,
+                    status: "error",
+                    isClosable: true,
+                })
+            } else {
+                toast({
+                    title: error.message,
+                    status: "error",
+                    isClosable: true,
+                })
+            }
         }
-    })
+    }
 
-    const deleteTransaction = () => axios.delete('http://localhost:8080/api/transaction/'+ transaction.id, {
-        headers: {
-            "Authorization": token
+    const rejectTransaction = async () => {
+        try {
+            const resp = await axios.get('http://localhost:8080/api/transaction/'+ transaction.id + '/reject', {
+                headers: {
+                    "Authorization": token
+                }
+            })
+            if (resp.status == 200) {
+                toast({
+                    title: resp.data.message,
+                    status: "success",
+                    isClosable: true,
+                })
+            } else {
+                toast({
+                    title: resp.data.message,
+                    status: "error",
+                    isClosable: true,
+                })
+            }
+        } catch (error: any) {
+            if (error.response){
+                toast({
+                    title: error.response.data.message,
+                    status: "error",
+                    isClosable: true,
+                })
+            } else {
+                toast({
+                    title: error.message,
+                    status: "error",
+                    isClosable: true,
+                })
+            }
         }
-    })
+    }
+
+    const deleteTransaction = async () => {
+        try {
+            const resp = await axios.get('http://localhost:8080/api/transaction/'+ transaction.id, {
+                headers: {
+                    "Authorization": token
+                }
+            })
+            if (resp.status == 200) {
+                toast({
+                    title: resp.data.message,
+                    status: "success",
+                    isClosable: true,
+                })
+            } else {
+                toast({
+                    title: resp.data.message,
+                    status: "error",
+                    isClosable: true,
+                })
+            }
+        } catch (error: any) {
+            if (error.response){
+                toast({
+                    title: error.response.data.message,
+                    status: "error",
+                    isClosable: true,
+                })
+            } else {
+                toast({
+                    title: error.message,
+                    status: "error",
+                    isClosable: true,
+                })
+            }
+        }
+    }
 
     return (
         <Modal
