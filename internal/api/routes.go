@@ -2,13 +2,12 @@ package api
 
 import (
 	"fmt"
-	"github.com/rs/cors"
-	"net/http"
-
+	"github.com/gorilla/handlers"
 	"mpp/pkg/auth"
 	configuration "mpp/pkg/config"
 	"mpp/pkg/controller"
 	"mpp/pkg/healthcheck"
+	"net/http"
 
 	"github.com/dgrijalva/jwt-go"
 	"github.com/gorilla/mux"
@@ -18,11 +17,6 @@ import (
 var config = configuration.GetConfig()
 
 func Init() error {
-
-	c := cors.New(cors.Options{
-		AllowedOrigins: []string{"*"},
-		AllowedMethods: []string{"GET", "POST", "DELETE"},
-	})
 
 	r := mux.NewRouter()
 
@@ -34,9 +28,13 @@ func Init() error {
 
 	a.HandleFunc("/transaction/{id}", controller.ProcessGetTransactionByID).Methods("GET")
 	a.HandleFunc("/transaction/{id}", controller.ProcessDeleteTransaction).Methods("DELETE")
-	a.HandleFunc("/transaction/{id}/settle", controller.SettleTransaction).Methods("POST")
-	a.HandleFunc("/transaction/{id}/reject", controller.RejectTransaction).Methods("POST")
+	a.HandleFunc("/transaction/{id}", preFlight).Methods("OPTIONS")
+	a.HandleFunc("/transaction/{id}/settle", controller.SettleTransaction).Methods("GET")
+	a.HandleFunc("/transaction/{id}/reject", controller.RejectTransaction).Methods("GET")
+
 	a.HandleFunc("/transactions", controller.ProcessGetAllTransactions).Methods("GET")
+	a.HandleFunc("/transactions", preFlight).Methods("OPTIONS")
+
 	a.HandleFunc("/transactions", controller.ProcessDeleteAllTransactions).Methods("DELETE")
 
 	a.HandleFunc("/transaction/creditcard", controller.ProcessCreateTransaction).Methods("POST")
@@ -44,7 +42,11 @@ func Init() error {
 	a.HandleFunc("/transaction/applepay", controller.ProcessCreateTransaction).Methods("POST")
 	a.HandleFunc("/transaction/googlepay", controller.ProcessCreateTransaction).Methods("POST")
 
-	err := http.ListenAndServe(":"+config.Port, c.Handler(r))
+	headersOk := handlers.AllowedHeaders([]string{"X-Requested-With", "X-CSRF-Token", "Accept", "Content-Type", "Content-Length", "Accept-Encoding", "Authorization"})
+	originsOk := handlers.AllowedOrigins([]string{"*"})
+	methodsOk := handlers.AllowedMethods([]string{"GET", "HEAD", "POST", "PUT", "OPTIONS", "DELETE"})
+
+	err := http.ListenAndServe(":"+config.Port, handlers.CORS(originsOk, headersOk, methodsOk)(r))
 	if err != nil {
 		return err
 	}
@@ -76,4 +78,15 @@ func authMiddleware(next http.Handler) http.Handler {
 			fmt.Fprintf(w, "Not Authorized")
 		}
 	})
+}
+
+func preFlight(w http.ResponseWriter, _ *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	w.Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
+	w.Header().Set("Access-Control-Allow-Headers", "*")
+	w.Header().Set("Access-Control-Request-Headers", "*")
+	w.Header().Set("Access-Control-Expose-Headers", "*")
+
+	w.WriteHeader(http.StatusOK)
 }
