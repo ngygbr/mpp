@@ -25,6 +25,7 @@ func Init() error {
 
 	r.HandleFunc("/healthcheck", healthcheck.HealthCheck).Methods("GET")
 	r.HandleFunc("/login", auth.Login).Methods("GET")
+	r.HandleFunc("/encryptcard", controller.ProcessEncryptCard).Methods("POST")
 
 	a.HandleFunc("/transaction/{id}", controller.ProcessGetTransactionByID).Methods("GET")
 	a.HandleFunc("/transaction/{id}", controller.ProcessDeleteTransaction).Methods("DELETE")

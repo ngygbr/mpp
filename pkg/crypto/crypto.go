@@ -22,7 +22,7 @@ func generateKey() (string, error) {
 	return key, nil
 }
 
-func EncryptCard(cardToEncrypt model.CreditCard, keyString string) (string, string, error) {
+func EncryptCard(cardToEncrypt *model.CreditCard, keyString string) (string, string, error) {
 
 	marshalledCard, err := json.Marshal(cardToEncrypt)
 	if err != nil {

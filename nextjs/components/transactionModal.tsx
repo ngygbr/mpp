@@ -12,13 +12,14 @@ import {
     Stack, Tag,
     Text, useToast
 } from "@chakra-ui/react";
-import React, {PropsWithChildren} from "react";
+import React, {PropsWithChildren, useState} from "react";
 import axios from "axios";
 import {randomUUID} from "crypto";
-import useSWR from "swr";
+import useSWR, {KeyedMutator, useSWRConfig} from "swr";
 
 type Props = {
     token: string,
+    mutator:  KeyedMutator<any>,
     isOpened: boolean;
     closeModal: () => void;
     transaction: {
@@ -41,13 +42,16 @@ type Props = {
     };
 } & Record<string, any>;
 
-const TransactionModal = ( {token, isOpened,closeModal,transaction}: PropsWithChildren<Props>) => {
+const TransactionModal = ( {token, mutator, isOpened,closeModal,transaction}: PropsWithChildren<Props>) => {
 
     const toast = useToast()
+    const settleUrl = 'http://localhost:8080/api/transaction/'+ transaction.id + '/settle'
+    const rejectUrl = 'http://localhost:8080/api/transaction/'+ transaction.id + '/reject'
+    const deleteUrl = 'http://localhost:8080/api/transaction/'+ transaction.id
 
-    const settleTransaction = async () => {
+    const statusUpdate = async (url: string) => {
         try {
-            const resp = await axios.get('http://localhost:8080/api/transaction/'+ transaction.id + '/settle', {
+            const resp = await axios.get(url, {
                 headers: {
                     "Authorization": token
                 }
@@ -58,13 +62,9 @@ const TransactionModal = ( {token, isOpened,closeModal,transaction}: PropsWithCh
                     status: "success",
                     isClosable: true,
                 })
-            } else {
-                toast({
-                    title: resp.data.message,
-                    status: "error",
-                    isClosable: true,
-                })
             }
+            await mutator(token)
+            closeModal()
         } catch (error: any) {
             if (error.response){
                 toast({
@@ -82,9 +82,9 @@ const TransactionModal = ( {token, isOpened,closeModal,transaction}: PropsWithCh
         }
     }
 
-    const rejectTransaction = async () => {
+    const deleteTransaction = async (url: string) => {
         try {
-            const resp = await axios.get('http://localhost:8080/api/transaction/'+ transaction.id + '/reject', {
+            const resp = await axios.delete(url, {
                 headers: {
                     "Authorization": token
                 }
@@ -95,50 +95,9 @@ const TransactionModal = ( {token, isOpened,closeModal,transaction}: PropsWithCh
                     status: "success",
                     isClosable: true,
                 })
-            } else {
-                toast({
-                    title: resp.data.message,
-                    status: "error",
-                    isClosable: true,
-                })
             }
-        } catch (error: any) {
-            if (error.response){
-                toast({
-                    title: error.response.data.message,
-                    status: "error",
-                    isClosable: true,
-                })
-            } else {
-                toast({
-                    title: error.message,
-                    status: "error",
-                    isClosable: true,
-                })
-            }
-        }
-    }
-
-    const deleteTransaction = async () => {
-        try {
-            const resp = await axios.get('http://localhost:8080/api/transaction/'+ transaction.id, {
-                headers: {
-                    "Authorization": token
-                }
-            })
-            if (resp.status == 200) {
-                toast({
-                    title: resp.data.message,
-                    status: "success",
-                    isClosable: true,
-                })
-            } else {
-                toast({
-                    title: resp.data.message,
-                    status: "error",
-                    isClosable: true,
-                })
-            }
+            await mutator(token)
+            closeModal()
         } catch (error: any) {
             if (error.response){
                 toast({
@@ -272,7 +231,7 @@ const TransactionModal = ( {token, isOpened,closeModal,transaction}: PropsWithCh
                             _hover={
                                 {bg: "brand.hover"}
                             }
-                            onClick={settleTransaction}
+                            onClick={(url) => statusUpdate(settleUrl)}
                         >Settle</Button>
                         <Button
                             bg={"brand.200"}
@@ -280,16 +239,17 @@ const TransactionModal = ( {token, isOpened,closeModal,transaction}: PropsWithCh
                             _hover={
                                 {bg: "brand.hover"}
                             }
-                            onClick={rejectTransaction}
+                            onClick={(url) => statusUpdate(rejectUrl)}
                         >Reject</Button>
                     </HStack>
                     <Button
+                        loadingText="Deleting..."
                         bg={"brand.200"}
                         color={"brand.100"}
                         _hover={
                             {bg: "brand.hover"}
                         }
-                        onClick={deleteTransaction}
+                        onClick={(url) => deleteTransaction(deleteUrl)}
                     >Delete</Button>
                 </ModalFooter>
             </ModalContent>

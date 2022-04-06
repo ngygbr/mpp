@@ -12,12 +12,14 @@ import {
 import {PropsWithChildren} from "react";
 import {useForm} from "react-hook-form";
 import axios from "axios";
+import {KeyedMutator} from "swr";
 
 type Props = {
     token: string,
+    mutator:  KeyedMutator<any>,
 } & Record<string, any>;
 
-const ACH = ( {token}: PropsWithChildren<Props>) => {
+const ACH = ( {token, mutator}: PropsWithChildren<Props>) => {
 
     const toast = useToast()
 
@@ -57,13 +59,8 @@ const ACH = ( {token}: PropsWithChildren<Props>) => {
                     status: "success",
                     isClosable: true,
                 })
-            } else {
-                toast({
-                    title: resp.data.message,
-                    status: "error",
-                    isClosable: true,
-                })
             }
+            await mutator(token)
         } catch (error: any) {
             if (error.response){
                 toast({

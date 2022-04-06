@@ -2,9 +2,11 @@ import { Flex, Icon, Stack, Text, useDisclosure } from "@chakra-ui/react";
 import {PropsWithChildren} from "react";
 import TransactionModal from "./transactionModal";
 import { MdOutlineMoreVert } from 'react-icons/md'
+import {KeyedMutator} from "swr";
 
 type Props = {
     token: string,
+    mutator:  KeyedMutator<any>,
     transaction: {
         id: string,
         status: string,
@@ -25,7 +27,7 @@ type Props = {
     };
 } & Record<string, any>;
 
-const Card = ( {token, transaction}: PropsWithChildren<Props>) => {
+const Card = ( {token, mutator, transaction}: PropsWithChildren<Props>) => {
     const { isOpen, onOpen, onClose } = useDisclosure()
 
     return (
@@ -67,6 +69,7 @@ const Card = ( {token, transaction}: PropsWithChildren<Props>) => {
             <TransactionModal
                 key={transaction.id}
                 token={token}
+                mutator={mutator}
                 isOpened={isOpen}
                 closeModal={onClose}
                 transaction={transaction}
