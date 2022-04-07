@@ -24,7 +24,7 @@ func ValidateCreditCard(card *model.CreditCard) error {
 		return errors.New("invalid card number for regex")
 	}
 
-	if !cvcRegex.Match([]byte(card.CVC)) {
+	if !cvcRegex.Match([]byte(*card.CVC)) {
 		return errors.New("invalid cvc code")
 	}
 
@@ -32,12 +32,12 @@ func ValidateCreditCard(card *model.CreditCard) error {
 		return errors.New("invalid holder name")
 	}
 
-	if !expDateRegex.Match([]byte(card.ExpirationDate)) {
+	if !expDateRegex.Match([]byte(*card.ExpirationDate)) {
 		return errors.New("invalid expiration date for regex")
 	}
 
-	month, _ := strconv.Atoi(strings.Split(card.ExpirationDate, "/")[0])
-	year, _ := strconv.Atoi("20" + strings.Split(card.ExpirationDate, "/")[1])
+	month, _ := strconv.Atoi(strings.Split(*card.ExpirationDate, "/")[0])
+	year, _ := strconv.Atoi("20" + strings.Split(*card.ExpirationDate, "/")[1])
 	expDate := time.Date(year, time.Month(month), 0, 0, 0, 0, 0, time.UTC)
 
 	if !expDate.After(time.Now()) {
@@ -80,11 +80,11 @@ func ValidateAch(ach *model.Ach) error {
 		return errors.New("invalid account number")
 	}
 
-	if !achRoutingRegex.Match([]byte(ach.RoutingNumber)) {
+	if !achRoutingRegex.Match([]byte(*ach.RoutingNumber)) {
 		return errors.New("invalid routing number")
 	}
 
-	if !achSECRegex.Match([]byte(ach.SECCode)) {
+	if !achSECRegex.Match([]byte(*ach.SECCode)) {
 		return errors.New("invalid sec code")
 	}
 

@@ -31,17 +31,17 @@ type Address struct {
 }
 
 type CreditCard struct {
-	CardNumber     string `json:"card_number"`
-	HolderName     string `json:"holder_name"`
-	ExpirationDate string `json:"exp_date"`
-	CVC            string `json:"cvc"`
+	CardNumber     string  `json:"card_number"`
+	HolderName     string  `json:"holder_name"`
+	ExpirationDate *string `json:"exp_date,omitempty"`
+	CVC            *string `json:"cvc,omitempty"`
 }
 
 type Ach struct {
-	AccountNumber string `json:"account_number"`
-	RoutingNumber string `json:"routing_number"`
-	AccountType   string `json:"account_type"`
-	SECCode       string `json:"sec_code"`
+	AccountNumber string  `json:"account_number"`
+	RoutingNumber *string `json:"routing_number,omitempty"`
+	AccountType   string  `json:"account_type,omitempty"`
+	SECCode       *string `json:"sec_code"`
 }
 
 type ApplePay struct {
