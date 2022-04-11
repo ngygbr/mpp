@@ -1,200 +1,275 @@
 # Mock Payment Processor
+<hr />
 
 Mock Payment Processor written in GO for simulate the lifecycle of a transaction.
 
-<br>
-
 ## Usage
+<hr />
 
-...
+In the <code>root</code> directory: <br>
+<code>go run main.go</code>
 
-Then run the binary:
-
-```sh
-$ ./main
-
-2022/04/01 14:55:38 Starting HTTP server at http://localhost:8080 ...
-```
+In the <code>nextjs</code> directory: <br>
+<code>npm indtall</code> <br>
+<code>npm run dev</code>
 
 ## API Docs
-
-Documentation of the API
-
-<br>
 <hr />
 
-### Healthcheck
-Informs about the API's condition
+<details>
+<summary> Healthcheck </summary>
+
+*Informs about the API's condition*
+
 > Request Method: `GET` <br>
 > Request URL: `/healthcheck`
+</details>
 
-<br>
-<hr />
+<details>
+<summary> Login </summary>
 
-### Login
-Retrieve the access token
-> Request Method: `POST` <br>
+*Retrieve the access token*
+
+> Request Method: `GET` <br>
 > Request URL: `/login`
+</details>
 
-| Name | Type | Description | Required |
-| ------ | ------ | ------ | ------ |
-| username | `string` | Name of the user | `true` |
+<details>
+<summary> Get Transaction </summary>
 
-<br>
-<hr />
+*Retrieve a transaction by ID*
 
-### Get Transaction
-Retrieve a transaction by ID
 > Request Method: `GET` <br>
 > Request URL: `/api/transaction/{id}`
+</details>
 
-<br>
-<hr />
+<details>
+<summary> Delete Transaction </summary>
 
-### Delete Transaction
-Delete a transaction by ID
+*Delete a transaction by ID*
+
 > Request Method: `DELETE` <br>
 > Request URL: `/api/transaction/{id}`
+</details>
 
-<br>
-<hr />
+<details>
+<summary> Settle Transaction </summary>
 
-### Settle Transaction
-Set the transaction status to settled
+*Set the transaction status to settled*
+
 > Request Method: `POST` <br>
 > Request URL: `/api/transaction/{id}/settle`
+</details>
 
-<br>
-<hr />
+<details>
+<summary> Reject Transaction </summary>
 
-### Reject Transaction
-Set the transaction status to rejected
+*Set the transaction status to rejected*
+
 > Request Method: `POST` <br>
 > Request URL: `/api/transaction/{id}/reject`
+</details>
 
-<br>
-<hr />
+<details>
+<summary> Get All Transaction </summary>
 
-### Get All
-Retrieve all transactions
+*Retrieve all transactions*
+
 > Request Method: `GET` <br>
 > Request URL: `/api/transactions`
+</details>
 
-<br>
-<hr />
+<details>
+<summary> Delete All Transaction </summary>
 
-### Delete All
-Delete all transactions
+*Delete all transactions*
+
 > Request Method: `DELETE` <br>
 > Request URL: `/api/transactions`
+</details>
 
-<br>
-<hr />
+<details>
+<summary> Credit Card Transaction </summary>
 
-### Credit Card
-Create a credit card transaction
+*Create a credit card transaction*
+
 > Request Method: `POST` <br>
 > Request URL: `/api/transaction/creditcard`
 
-| Plugin | Type | Description | Required |
-| ------ | ------ | ------ | ------ |
-| amount | `uint64` | Amount | `true` |
-| payment_method | `object` | Method of the payment | `true` |
-| billing_address | `object` | Address of costumer | `true` |
+| Plugin          | Type     | Description           | Required |
+| --------------- | -------- | --------------------- | -------- |
+| amount          | `uint64` | Amount                | `true`   |
+| payment_method  | `object` | Method of the payment | `true`   |
+| billing_address | `object` | Address of costumer   | `true`   |
 
-<br>
-<hr />
+*Example request*
 
-### ACH
-Create an ach transaction
+```json
+{
+  "amount": int,
+  "payment_method": {
+    "credit_card": {
+      "card_number": string,
+      "holder_name": string,
+      "exp_date": string,
+      "cvc": string
+    }
+  },
+  "billing_address": {
+    "first_name": string,
+    "last_name": string,
+    "postal_code": string,
+    "city": string,
+    "address_line_1": string,
+    "email": string,
+    "phone": string
+  }
+}
+```
+</details>
+
+<details>
+<summary> ACH Transaction </summary>
+
+*Create an ach transaction*
+
 > Request Method: `POST` <br>
 > Request URL: `/api/transaction/ach`
 
-| Plugin | Type | Description | Required |
-| ------ | ------ | ------ | ------ |
-| amount | `uint64` | Amount | `true` |
-| payment_method | `object` | Method of the payment | `true` |
-| billing_address | `object` | Address of costumer | `true` |
+| Plugin          | Type     | Description           | Required |
+| --------------- | -------- | --------------------- | -------- |
+| amount          | `uint64` | Amount                | `true`   |
+| payment_method  | `object` | Method of the payment | `true`   |
+| billing_address | `object` | Address of costumer   | `true`   |
 
-<br>
+*Example request*
+
+```json
+{
+  "amount": int,
+  "payment_method": {
+    "ach": {
+      "account_type": string,
+      "account_number": string,
+      "routing_number": string,
+      "sec_code": string
+    }
+  },
+  "billing_address": {
+    "first_name": string,
+    "last_name": string,
+    "postal_code": string,
+    "city": string,
+    "address_line_1": string,
+    "email": string,
+    "phone": string
+  }
+}
+```
+</details>
+
+<details>
+<summary> Apple Pay Transaction </summary>
+
+*Create an applepay  transaction*
+
+> Request Method: `POST` <br>
+> Request URL: `/api/transaction/applepay`
+
+| Plugin          | Type     | Description           | Required |
+| --------------- | -------- | --------------------- | -------- |
+| amount          | `uint64` | Amount                | `true`   |
+| payment_method  | `object` | Method of the payment | `true`   |
+| billing_address | `object` | Address of costumer   | `true`   |
+
+*Example request*
+
+```json
+{
+  "amount": int,
+  "payment_method": {
+    "apple_pay": {
+      "payment_token": {
+        "identifier": string,
+        "payment_data": string
+      }
+    }
+  },
+  "billing_address": {
+    "first_name": string,
+    "last_name": string,
+    "postal_code": string,
+    "city": string,
+    "address_line_1": string,
+    "email": string,
+    "phone": string
+  }
+}
+```
+</details>
+
+<details>
+<summary> Google Pay Transaction </summary>
+
+*Create an googlepay  transaction*
+
+> Request Method: `POST` <br>
+> Request URL: `/api/transaction/googlepay`
+
+| Plugin          | Type     | Description           | Required |
+| --------------- | -------- | --------------------- | -------- |
+| amount          | `uint64` | Amount                | `true`   |
+| payment_method  | `object` | Method of the payment | `true`   |
+| billing_address | `object` | Address of costumer   | `true`   |
+
+*Example request*
+
+```json
+{
+  "amount": int,
+  "payment_method": {
+    "google_pay": {
+      "encrypted_payment": {
+        "payment_id": string,
+        "payment_data": string
+      }
+    }
+  },
+  "billing_address": {
+    "first_name": string,
+    "last_name": string,
+    "postal_code": string,
+    "city": string,
+    "address_line_1": string,
+    "email": string,
+    "phone": string
+  }
+}
+```
+</details>
+
 <hr />
 
 ### Status codes
-<br>
 
-| Message | Code |
-| ------ | ------ |
-| Success | `100` |
-| Limit exceeded | `201` |
-| Card blocked | `202` |
+| Message              | Code  |
+| -------------------- | ----- |
+| Success              | `100` |
+| Limit exceeded       | `201` |
+| Card blocked         | `202` |
 | Daily limit exceeded | `203` |
-| Fraud detected | `204` |
-| Error occured | `206` |
+| Fraud detected       | `204` |
+| Error occured        | `206` |
 
-<br>
 <hr />
 
-### Example transaction
-<br>
+### Special Cards
 
-```json
-{
-    "amount": 1000,
-    "payment_method": {
-        "credit_card": {
-            "card_number": "4111111111111111",
-            "holder_name": "John Doe",
-            "exp_date": "05/25",
-            "cvc": "444"
-        }
-    },
-    "billing_address": {
-        "first_name": "John",
-        "last_name": "Doe",
-        "postal_code": "1111",
-        "city": "Szeged",
-        "address_line_1": "Example street 69.",
-        "email": "example@github.com",
-        "phone": "5555555555"
-    }
-}
-```
+| Error              | Card Number  |
+| -------------------- | ----- |
+| Limit exceeded       | `4455444455551111` |
+| Card blocked         | `0000000000000000` |
+| Daily limit exceeded | `7755444455551111` |
+| Fraud detected       | `8888888888888888` |
 
-<br>
 <hr />
-
-### Example response
-<br>
-
-```json
-{
-    "status": "success",
-    "status_code": 100,
-    "message": "success",
-    "data": {
-        "id": "c91khre49b3jg1lbbje0",
-        "status": "pending_settlement",
-        "payment_method_type": "creditcard",
-        "payment_method": {
-            "credit_card": {
-                "card_number": "411111******1111",
-                "holder_name": "John Doe",
-                "exp_date": "05/25",
-                "cvc": "444"
-            }
-        },
-        "amount": 1000,
-        "billing_address": {
-            "first_name": "John",
-            "last_name": "Doe",
-            "postal_code": "1111",
-            "city": "Szeged",
-            "address_line_1": "Example street 69.",
-            "email": "example@github.com",
-            "phone": "5555555555"
-        },
-        "created_at": "2022-03-29T19:59:09.589402+02:00",
-        "updated_at": "2022-03-29T19:59:09.589402+02:00"
-    }
-}
-```

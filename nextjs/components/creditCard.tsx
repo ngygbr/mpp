@@ -1,7 +1,4 @@
 import {
-  Alert,
-  AlertIcon,
-  Box,
   Button,
   FormControl,
   FormErrorMessage,
@@ -9,7 +6,7 @@ import {
   Grid,
   GridItem,
   HStack,
-  Input,
+  Input, InputGroup, InputLeftAddon,
   Stack,
   useToast,
 } from "@chakra-ui/react";
@@ -35,7 +32,6 @@ const CreditCard = ({ token, mutator }: PropsWithChildren<Props>) => {
       const resp = await axios.post(
         "http://localhost:8080/api/transaction/creditcard",
         {
-          amount: values.amount,
           payment_method: {
             credit_card: {
               card_number: values.card_number,
@@ -44,6 +40,7 @@ const CreditCard = ({ token, mutator }: PropsWithChildren<Props>) => {
               cvc: values.cvc,
             },
           },
+          amount: parseInt(values.amount),
           billing_address: {
             first_name: values.first_name,
             last_name: values.last_name,
@@ -93,13 +90,21 @@ const CreditCard = ({ token, mutator }: PropsWithChildren<Props>) => {
         <GridItem p={"2rem"} bg={"brand.200"} borderRadius={"md"}>
           <Stack>
             <FormControl id="amount" isInvalid={errors.amount}>
-              <FormLabel>Amount</FormLabel>
+              <InputGroup>
+              <InputLeftAddon
+                  children='Amount'
+                  bg={"brand.300"}
+                  color={"brand.100"}
+                  border={"none"}
+              />
               <Input
-                disabled
+                _hover={{ pointerEvents: "none" }}
+                cursor={"default"}
                 value={Math.trunc(Math.random() * 2000) + 1}
                 type="number"
                 {...register("amount")}
               />
+              </InputGroup>
               <FormErrorMessage>
                 {errors.amount && errors.amount.message}
               </FormErrorMessage>
@@ -109,8 +114,14 @@ const CreditCard = ({ token, mutator }: PropsWithChildren<Props>) => {
               isRequired
               isInvalid={errors.card_number}
             >
+              <InputGroup>
+                <InputLeftAddon
+                    children='Card Number'
+                    bg={"brand.300"}
+                    color={"brand.100"}
+                    border={"none"}
+                />
               <Input
-                placeholder={"Card Number"}
                 type="number"
                 {...register("card_number", {
                   required: "This is required",
@@ -124,13 +135,20 @@ const CreditCard = ({ token, mutator }: PropsWithChildren<Props>) => {
                   },
                 })}
               />
+              </InputGroup>
               <FormErrorMessage>
                 {errors.card_number && errors.card_number.message}
               </FormErrorMessage>
             </FormControl>
             <FormControl id="holder" isRequired isInvalid={errors.holder}>
+              <InputGroup>
+                <InputLeftAddon
+                    children='Card Holder'
+                    bg={"brand.300"}
+                    color={"brand.100"}
+                    border={"none"}
+                />
               <Input
-                placeholder={"Card Holder"}
                 type="text"
                 {...register("holder", {
                   required: "This is required",
@@ -140,6 +158,7 @@ const CreditCard = ({ token, mutator }: PropsWithChildren<Props>) => {
                   },
                 })}
               />
+              </InputGroup>
               <FormErrorMessage>
                 {errors.holder && errors.holder.message}
               </FormErrorMessage>
@@ -147,8 +166,15 @@ const CreditCard = ({ token, mutator }: PropsWithChildren<Props>) => {
 
             <HStack>
               <FormControl id="exp_date" isRequired isInvalid={errors.exp_date}>
+                <InputGroup>
+                  <InputLeftAddon
+                      children='Exp. Date'
+                      bg={"brand.300"}
+                      color={"brand.100"}
+                      border={"none"}
+                  />
                 <Input
-                  placeholder={"Exp. date"}
+                  placeholder={"MM/YY"}
                   type="text"
                   {...register("exp_date", {
                     required: "This is required",
@@ -158,13 +184,20 @@ const CreditCard = ({ token, mutator }: PropsWithChildren<Props>) => {
                     },
                   })}
                 />
+                </InputGroup>
                 <FormErrorMessage>
                   {errors.exp_date && errors.exp_date.message}
                 </FormErrorMessage>
               </FormControl>
               <FormControl id="cvc" isRequired isInvalid={errors.cvc}>
+                <InputGroup>
+                  <InputLeftAddon
+                      children='CVC'
+                      bg={"brand.300"}
+                      color={"brand.100"}
+                      border={"none"}
+                  />
                 <Input
-                  placeholder={"CVC"}
                   type="password"
                   {...register("cvc", {
                     required: "This is required",
@@ -178,6 +211,7 @@ const CreditCard = ({ token, mutator }: PropsWithChildren<Props>) => {
                     },
                   })}
                 />
+                </InputGroup>
                 <FormErrorMessage>
                   {errors.cvc && errors.cvc.message}
                 </FormErrorMessage>

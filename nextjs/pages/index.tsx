@@ -1,10 +1,10 @@
 import type { NextPage } from "next";
+import { ReactNode, useState } from "react";
 import {
   Box,
   Button,
   Container,
   Drawer,
-  Stack,
   DrawerBody,
   DrawerContent,
   DrawerHeader,
@@ -20,20 +20,16 @@ import {
   TabPanels,
   Tab,
   TabPanel,
-  IconButton,
-  HStack,
   useToast,
 } from "@chakra-ui/react";
 import useSWR from "swr";
 import axios from "axios";
 import Cookies from "js-cookie";
-import { ReactNode, useEffect, useState } from "react";
+import { MdRefresh } from "react-icons/md";
 import jwtDecode, { JwtPayload } from "jwt-decode";
 import Card from "../components/card";
 import CreditCard from "../components/creditCard";
 import ACH from "../components/ach";
-import { MdRefresh } from "react-icons/md";
-import { any } from "prop-types";
 import TokenPayment from "../components/tokenPayment";
 
 const Home: NextPage = () => {

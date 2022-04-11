@@ -1,7 +1,4 @@
 import {
-  Alert,
-  AlertIcon,
-  Box,
   Button,
   FormControl,
   FormErrorMessage,
@@ -9,7 +6,7 @@ import {
   Grid,
   GridItem,
   HStack,
-  Input,
+  Input, InputGroup, InputLeftAddon,
   Select,
   Stack,
   useToast,
@@ -36,7 +33,7 @@ const ACH = ({ token, mutator }: PropsWithChildren<Props>) => {
       const resp = await axios.post(
         "http://localhost:8080/api/transaction/ach",
         {
-          amount: values.amount,
+          amount: parseInt(values.amount),
           payment_method: {
             ach: {
               account_number: values.account_number,
@@ -94,13 +91,19 @@ const ACH = ({ token, mutator }: PropsWithChildren<Props>) => {
         <GridItem p={"2rem"} bg={"brand.200"} borderRadius={"md"}>
           <Stack>
             <FormControl id="amount" isInvalid={errors.amount}>
-              <FormLabel>Amount</FormLabel>
+              <InputGroup>
+                <InputLeftAddon
+                    children='Amount'
+                    bg={"brand.300"}
+                    color={"brand.100"}
+                    border={"none"}
+                />
               <Input
-                disabled
                 value={Math.trunc(Math.random() * 2000) + 1}
                 type="number"
                 {...register("amount")}
               />
+              </InputGroup>
               <FormErrorMessage>
                 {errors.amount && errors.amount.message}
               </FormErrorMessage>
@@ -110,13 +113,20 @@ const ACH = ({ token, mutator }: PropsWithChildren<Props>) => {
               isRequired
               isInvalid={errors.account_number}
             >
+              <InputGroup>
+                <InputLeftAddon
+                    children='Account Number'
+                    bg={"brand.300"}
+                    color={"brand.100"}
+                    border={"none"}
+                />
               <Input
-                placeholder={"Account Number"}
                 type="number"
                 {...register("account_number", {
                   required: "This is required",
                 })}
               />
+              </InputGroup>
               <FormErrorMessage>
                 {errors.account_number && errors.account_number.message}
               </FormErrorMessage>
@@ -126,13 +136,20 @@ const ACH = ({ token, mutator }: PropsWithChildren<Props>) => {
               isRequired
               isInvalid={errors.routing_number}
             >
+              <InputGroup>
+                <InputLeftAddon
+                    children='Routing Number'
+                    bg={"brand.300"}
+                    color={"brand.100"}
+                    border={"none"}
+                />
               <Input
-                placeholder={"Routing Number"}
                 type="text"
                 {...register("routing_number", {
                   required: "This is required",
                 })}
               />
+              </InputGroup>
               <FormErrorMessage>
                 {errors.routing_number && errors.routing_number.message}
               </FormErrorMessage>
@@ -158,13 +175,20 @@ const ACH = ({ token, mutator }: PropsWithChildren<Props>) => {
                 </FormErrorMessage>
               </FormControl>
               <FormControl id="sec_code" isRequired isInvalid={errors.sec_code}>
+                <InputGroup>
+                  <InputLeftAddon
+                      children='SEC'
+                      bg={"brand.300"}
+                      color={"brand.100"}
+                      border={"none"}
+                  />
                 <Input
-                  placeholder={"SEC Code"}
                   type="password"
                   {...register("sec_code", {
                     required: "This is required",
                   })}
                 />
+                </InputGroup>
                 <FormErrorMessage>
                   {errors.sec_code && errors.sec_code.message}
                 </FormErrorMessage>

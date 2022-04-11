@@ -19,10 +19,9 @@ import {
   Text,
   useToast,
 } from "@chakra-ui/react";
-import React, { PropsWithChildren, useState } from "react";
+import React, { PropsWithChildren } from "react";
 import axios from "axios";
-import { randomUUID } from "crypto";
-import useSWR, { KeyedMutator, useSWRConfig } from "swr";
+import { KeyedMutator } from "swr";
 
 type Props = {
   token: string;

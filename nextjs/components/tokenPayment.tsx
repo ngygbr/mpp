@@ -1,20 +1,13 @@
 import {
-  Alert,
-  AlertIcon,
-  Box,
   Button,
   Flex,
   FormControl,
   FormErrorMessage,
-  FormLabel,
   Grid,
   GridItem,
   HStack,
-  Icon,
   Input,
-  Select,
   Stack,
-  Text,
   useDisclosure,
   useToast,
 } from "@chakra-ui/react";
@@ -23,7 +16,7 @@ import { useForm } from "react-hook-form";
 import axios from "axios";
 import { KeyedMutator } from "swr";
 import CardModal from "./cardModal";
-import { MdDoneAll, MdOutlineMoreVert, MdRefresh } from "react-icons/md";
+import { MdDoneAll } from "react-icons/md";
 
 type Props = {
   token: string;
@@ -44,7 +37,7 @@ const TokenPayment = ({ token, mutator, type }: PropsWithChildren<Props>) => {
       const resp = await axios.post(
         "http://localhost:8080/api/transaction/applepay",
         {
-          amount: 1099,
+          amount: Math.trunc(Math.random() * 2000) + 1,
           payment_method: {
             apple_pay: {
               payment_token: {
@@ -162,12 +155,8 @@ const TokenPayment = ({ token, mutator, type }: PropsWithChildren<Props>) => {
   return (
     <>
       <CardModal
-        token={token}
-        mutator={mutator}
         isOpened={isOpen}
         closeModal={onClose}
-        encryptedCard={encrypted}
-        encryptionKey={identifier}
         onEncryptedCardChange={setEncrypted}
         onEncryptedKeyChange={setIdentifier}
       />

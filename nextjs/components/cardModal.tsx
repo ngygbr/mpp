@@ -1,18 +1,11 @@
 import {
-  Accordion,
-  AccordionButton,
-  AccordionIcon,
-  AccordionItem,
-  AccordionPanel,
-  Box,
   Button,
   FormControl,
   FormErrorMessage,
-  FormLabel,
   Grid,
   GridItem,
   HStack,
-  Input,
+  Input, InputGroup, InputLeftAddon,
   Modal,
   ModalBody,
   ModalCloseButton,
@@ -21,18 +14,13 @@ import {
   ModalHeader,
   ModalOverlay,
   Stack,
-  Tag,
-  Text,
   useToast,
 } from "@chakra-ui/react";
-import React, { PropsWithChildren, useState, useCallback } from "react";
+import React, { PropsWithChildren } from "react";
 import axios from "axios";
 import { useForm } from "react-hook-form";
-import useSWR, { KeyedMutator, useSWRConfig } from "swr";
 
 type Props = {
-  token: string;
-  mutator: KeyedMutator<any>;
   isOpened: boolean;
   closeModal: () => void;
 } & Record<string, any>;
@@ -48,17 +36,12 @@ function base64ToHex(str: string) {
 }
 
 const CardModal = ({
-  token,
-  mutator,
   isOpened,
   closeModal,
-  encryptedCard,
-  encryptedKey,
   onEncryptedCardChange,
   onEncryptedKeyChange,
 }: PropsWithChildren<Props>) => {
   const toast = useToast();
-  const [expd, setExpd] = useState();
 
   const addCard = async (values: any | undefined) => {
     try {
@@ -125,8 +108,14 @@ const CardModal = ({
                     isRequired
                     isInvalid={errors.card_number}
                   >
+                    <InputGroup>
+                    <InputLeftAddon
+                        children='Card Number'
+                        bg={"brand.200"}
+                        color={"brand.100"}
+                        border={"none"}
+                    />
                     <Input
-                      placeholder={"Card Number"}
                       type="number"
                       {...register("card_number", {
                         required: "This is required",
@@ -140,13 +129,20 @@ const CardModal = ({
                         },
                       })}
                     />
+                    </InputGroup>
                     <FormErrorMessage>
                       {errors.card_number && errors.card_number.message}
                     </FormErrorMessage>
                   </FormControl>
                   <FormControl id="holder" isRequired isInvalid={errors.holder}>
+                    <InputGroup>
+                      <InputLeftAddon
+                          children='Card Holder'
+                          bg={"brand.200"}
+                          color={"brand.100"}
+                          border={"none"}
+                      />
                     <Input
-                      placeholder={"Card Holder"}
                       type="text"
                       {...register("holder", {
                         required: "This is required",
@@ -156,6 +152,7 @@ const CardModal = ({
                         },
                       })}
                     />
+                    </InputGroup>
                     <FormErrorMessage>
                       {errors.holder && errors.holder.message}
                     </FormErrorMessage>
@@ -167,8 +164,14 @@ const CardModal = ({
                       isRequired
                       isInvalid={errors.exp_date}
                     >
+                      <InputGroup>
+                        <InputLeftAddon
+                            children='Exp. Date'
+                            bg={"brand.200"}
+                            color={"brand.100"}
+                            border={"none"}
+                        />
                       <Input
-                        placeholder={"Exp. date"}
                         type="text"
                         {...register("exp_date", {
                           required: "This is required",
@@ -178,13 +181,20 @@ const CardModal = ({
                           },
                         })}
                       />
+                      </InputGroup>
                       <FormErrorMessage>
                         {errors.exp_date && errors.exp_date.message}
                       </FormErrorMessage>
                     </FormControl>
                     <FormControl id="cvc" isRequired isInvalid={errors.cvc}>
+                      <InputGroup>
+                        <InputLeftAddon
+                            children='CVC'
+                            bg={"brand.200"}
+                            color={"brand.100"}
+                            border={"none"}
+                        />
                       <Input
-                        placeholder={"CVC"}
                         type="password"
                         {...register("cvc", {
                           required: "This is required",
@@ -198,6 +208,7 @@ const CardModal = ({
                           },
                         })}
                       />
+                      </InputGroup>
                       <FormErrorMessage>
                         {errors.cvc && errors.cvc.message}
                       </FormErrorMessage>
