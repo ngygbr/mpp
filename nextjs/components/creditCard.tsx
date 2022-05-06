@@ -140,7 +140,7 @@ const CreditCard = ({ token, mutator }: PropsWithChildren<Props>) => {
                 {errors.card_number && errors.card_number.message}
               </FormErrorMessage>
             </FormControl>
-            <FormControl id="holder" isRequired isInvalid={errors.holder}>
+            <FormControl id="holder_name" isRequired isInvalid={errors.holder_name}>
               <InputGroup>
                 <InputLeftAddon
                     children='Card Holder'
@@ -150,7 +150,7 @@ const CreditCard = ({ token, mutator }: PropsWithChildren<Props>) => {
                 />
               <Input
                 type="text"
-                {...register("holder", {
+                {...register("holder_name", {
                   required: "This is required",
                   minLength: {
                     value: 4,
@@ -160,7 +160,7 @@ const CreditCard = ({ token, mutator }: PropsWithChildren<Props>) => {
               />
               </InputGroup>
               <FormErrorMessage>
-                {errors.holder && errors.holder.message}
+                {errors.holder_name && errors.holder_name.message}
               </FormErrorMessage>
             </FormControl>
 

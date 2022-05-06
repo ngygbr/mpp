@@ -36,22 +36,14 @@ const Home: NextPage = () => {
   const [token, setToken] = useState("");
   const [tokenExp, setTokenExp] = useState<undefined | number>();
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const {
-    data: transactions,
-    mutate,
-    error,
-  } = useSWR(token, (token) => fetcher(token));
   const toast = useToast();
 
+  const {data: transactions, mutate, error} = useSWR(token, (token) => fetcher(token));
   const fetcher = (token: string) =>
-    axios
-      .get("http://localhost:8080/api/transactions", {
+    axios.get("http://localhost:8080/api/transactions", {
         method: "GET",
-        headers: {
-          Authorization: token,
-        },
-      })
-      .then((res) => res.data);
+        headers: {Authorization: token,},
+    }).then((res) => res.data);
 
   const getToken = async () => {
     const response = await fetch("http://localhost:8080/login");
