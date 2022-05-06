@@ -1,10 +1,10 @@
 package main
 
 import (
-	"mpp/internal/api"
-	utils "mpp/pkg/config"
-	"mpp/pkg/controller"
-	"mpp/pkg/db"
+	"github.com/ngygbr/mpp/internal/api"
+	utils "github.com/ngygbr/mpp/pkg/config"
+	"github.com/ngygbr/mpp/pkg/controller"
+	"github.com/ngygbr/mpp/pkg/db"
 )
 
 func main() {

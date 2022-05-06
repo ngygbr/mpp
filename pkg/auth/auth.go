@@ -7,7 +7,7 @@ import (
 	"net/http"
 	"time"
 
-	configuration "mpp/pkg/config"
+	configuration "github.com/ngygbr/mpp/pkg/config"
 
 	"github.com/dgrijalva/jwt-go"
 )

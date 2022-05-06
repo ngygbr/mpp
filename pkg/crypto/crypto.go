@@ -8,7 +8,7 @@ import (
 	"encoding/json"
 	"io"
 	"log"
-	"mpp/pkg/model"
+	"github.com/ngygbr/mpp/pkg/model"
 )
 
 func generateKey() (string, error) {

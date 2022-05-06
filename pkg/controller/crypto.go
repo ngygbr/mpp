@@ -2,8 +2,8 @@ package controller
 
 import (
 	"encoding/json"
-	crypter "mpp/pkg/crypto"
-	"mpp/pkg/model"
+	crypter "github.com/ngygbr/mpp/pkg/crypto"
+	"github.com/ngygbr/mpp/pkg/model"
 	"net/http"
 )
 

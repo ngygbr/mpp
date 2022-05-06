@@ -2,9 +2,9 @@ package transaction
 
 import (
 	"github.com/stretchr/testify/assert"
-	utils "mpp/pkg/config"
-	"mpp/pkg/db"
-	"mpp/pkg/model"
+	utils "github.com/ngygbr/mpp/pkg/config"
+	"github.com/ngygbr/mpp/pkg/db"
+	"github.com/ngygbr/mpp/pkg/model"
 	"testing"
 )
 

@@ -3,10 +3,10 @@ package api
 import (
 	"fmt"
 	"github.com/gorilla/handlers"
-	"mpp/pkg/auth"
-	configuration "mpp/pkg/config"
-	"mpp/pkg/controller"
-	"mpp/pkg/healthcheck"
+	"github.com/ngygbr/mpp/pkg/auth"
+	configuration "github.com/ngygbr/mpp/pkg/config"
+	"github.com/ngygbr/mpp/pkg/controller"
+	"github.com/ngygbr/mpp/pkg/healthcheck"
 	"net/http"
 
 	"github.com/dgrijalva/jwt-go"

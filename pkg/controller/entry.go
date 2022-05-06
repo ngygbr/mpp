@@ -4,9 +4,9 @@ import (
 	"encoding/json"
 	"net/http"
 
-	"mpp/pkg/model"
-	"mpp/pkg/transaction"
-	validator "mpp/pkg/validate"
+	"github.com/ngygbr/mpp/pkg/model"
+	"github.com/ngygbr/mpp/pkg/transaction"
+	validator "github.com/ngygbr/mpp/pkg/validate"
 )
 
 func ProcessCreateTransaction(w http.ResponseWriter, r *http.Request) {

@@ -4,12 +4,12 @@ import (
 	"encoding/json"
 	"errors"
 	"log"
-	crypter "mpp/pkg/crypto"
+	crypter "github.com/ngygbr/mpp/pkg/crypto"
 	"time"
 
-	"mpp/pkg/db"
-	"mpp/pkg/model"
-	validator "mpp/pkg/validate"
+	"github.com/ngygbr/mpp/pkg/db"
+	"github.com/ngygbr/mpp/pkg/model"
+	validator "github.com/ngygbr/mpp/pkg/validate"
 
 	"github.com/rs/xid"
 )

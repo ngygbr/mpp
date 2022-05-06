@@ -3,7 +3,7 @@ package db
 import (
 	"encoding/json"
 
-	"mpp/pkg/model"
+	"github.com/ngygbr/mpp/pkg/model"
 
 	"github.com/dgraph-io/badger/v3"
 )

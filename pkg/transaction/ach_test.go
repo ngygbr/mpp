@@ -1,11 +1,11 @@
 package transaction
 
 import (
-	utils "mpp/pkg/config"
+	utils "github.com/ngygbr/mpp/pkg/config"
 	"testing"
 
-	"mpp/pkg/db"
-	"mpp/pkg/model"
+	"github.com/ngygbr/mpp/pkg/db"
+	"github.com/ngygbr/mpp/pkg/model"
 
 	"github.com/stretchr/testify/assert"
 )

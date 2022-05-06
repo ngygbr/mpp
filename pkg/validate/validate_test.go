@@ -3,7 +3,7 @@ package validpackage
 import (
 	"testing"
 
-	"mpp/pkg/model"
+	"github.com/ngygbr/mpp/pkg/model"
 
 	"github.com/pkg/errors"
 )

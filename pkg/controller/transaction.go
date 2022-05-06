@@ -5,9 +5,9 @@ import (
 	"net/http"
 	"time"
 
-	"mpp/pkg/db"
-	"mpp/pkg/model"
-	validator "mpp/pkg/validate"
+	"github.com/ngygbr/mpp/pkg/db"
+	"github.com/ngygbr/mpp/pkg/model"
+	validator "github.com/ngygbr/mpp/pkg/validate"
 
 	"github.com/gorilla/mux"
 )

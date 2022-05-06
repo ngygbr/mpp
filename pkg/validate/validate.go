@@ -1,12 +1,12 @@
 package validpackage
 
 import (
-	configuration "mpp/pkg/config"
+	configuration "github.com/ngygbr/mpp/pkg/config"
 	"strconv"
 	"strings"
 	"time"
 
-	"mpp/pkg/model"
+	"github.com/ngygbr/mpp/pkg/model"
 
 	"github.com/fluidpay/dough"
 	"github.com/pkg/errors"
