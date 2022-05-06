@@ -40,7 +40,7 @@ const Home: NextPage = () => {
 
   const {data: transactions, mutate, error} = useSWR(token, (token) => fetcher(token));
   const fetcher = (token: string) =>
-    axios.get("http://localhost:8080/api/transactions", {
+    axios.get( "http://localhost:8080/api/transactions", {
         method: "GET",
         headers: {Authorization: token,},
     }).then((res) => res.data);
@@ -67,7 +67,7 @@ const Home: NextPage = () => {
   const deleteAllTransaction = async () => {
     try {
       const resp = await axios.delete(
-        "http://localhost:8080/api/transactions",
+          "http://localhost:8080/api/transactions",
         {
           headers: {
             Authorization: token,
