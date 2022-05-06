@@ -1,6 +1,7 @@
 package transaction
 
 import (
+	utils "mpp/pkg/config"
 	"testing"
 
 	"mpp/pkg/db"
@@ -40,7 +41,8 @@ func TestACHTransaction(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			db.Connect("/tmp/achtest")
+			config := utils.GetConfig()
+			db.Connect(config.BadgerTmp + "/achtest")
 
 			got, _ := ACHTransaction(tt.args.transaction)
 

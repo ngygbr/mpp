@@ -10,8 +10,9 @@ import (
 func main() {
 
 	utils.LogConfig()
+	config := utils.GetConfig()
 
-	if _, err := db.Connect("/tmp"); err != nil {
+	if _, err := db.Connect(config.BadgerTmp); err != nil {
 		panic("failed to connect database")
 	}
 

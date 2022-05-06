@@ -198,7 +198,7 @@ func SetSettledAfter24Hours() {
 		go func() {
 			transactions, _ := db.GetAll()
 			for _, t := range transactions {
-				if t.CreatedAt.Add(24 * time.Hour).Before(time.Now()) {
+				if t.CreatedAt.Add(24 * time.Hour).Before(time.Now()) && t.Status != "rejected" {
 					t.Status = "settled"
 					t.UpdatedAt = time.Now()
 					err := db.Update(&t)

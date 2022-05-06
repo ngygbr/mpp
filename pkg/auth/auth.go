@@ -12,7 +12,7 @@ import (
 	"github.com/dgrijalva/jwt-go"
 )
 
-type User struct {
+type user struct {
 	Token string `json:"token"`
 }
 
@@ -20,9 +20,7 @@ var config = configuration.GetConfig()
 
 func Login(w http.ResponseWriter, _ *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
-
-	var user User
-
+	var user user
 	token, err := generateJWT()
 	if err != nil {
 		w.WriteHeader(http.StatusForbidden)
@@ -30,7 +28,6 @@ func Login(w http.ResponseWriter, _ *http.Request) {
 	}
 
 	user.Token = token
-
 	json.NewEncoder(w).Encode(user)
 	if err != nil {
 		w.WriteHeader(http.StatusBadRequest)

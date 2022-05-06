@@ -8,6 +8,7 @@ import (
 
 type Config struct {
 	Port                  string `mapstructure:"PORT"`
+	BadgerTmp             string `mapstructure:"BADGERTMP"`
 	SignKey               string `mapstructure:"SIGN_KEY"`
 	DisableFraudDetection bool   `mapstructure:"DISABLE_FRAUD_DETECTION"`
 	DisableLimit          bool   `mapstructure:"DISABLE_LIMIT"`

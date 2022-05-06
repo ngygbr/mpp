@@ -2,6 +2,7 @@ package transaction
 
 import (
 	"github.com/stretchr/testify/assert"
+	utils "mpp/pkg/config"
 	"mpp/pkg/db"
 	"mpp/pkg/model"
 	"testing"
@@ -20,7 +21,7 @@ func TestCCTransaction(t *testing.T) {
 				CreditCard: &model.CreditCard{
 					CardNumber:     "4111111111111111",
 					HolderName:     "Tester Holder",
-					ExpirationDate: "05/25",
+					ExpirationDate: "06/25",
 					CVC:            "444",
 				},
 			},
@@ -38,7 +39,8 @@ func TestCCTransaction(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			db.Connect("/tmp/cctest")
+			config := utils.GetConfig()
+			db.Connect(config.BadgerTmp + "/cctest")
 
 			got, _ := CCTransaction(tt.args.transaction)
 

@@ -2,6 +2,7 @@ package transaction
 
 import (
 	"github.com/stretchr/testify/assert"
+	utils "mpp/pkg/config"
 	"mpp/pkg/db"
 	"mpp/pkg/model"
 	"testing"
@@ -38,7 +39,8 @@ func TestApplePayTransaction(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			db.Connect("/tmp/aptest")
+			config := utils.GetConfig()
+			db.Connect(config.BadgerTmp + "/aptest")
 
 			got, _ := ApplePayTransaction(tt.args.transaction)
 

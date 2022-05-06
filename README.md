@@ -10,7 +10,7 @@ In the <code>root</code> directory: <br>
 <code>go run main.go</code>
 
 In the <code>nextjs</code> directory: <br>
-<code>npm indtall</code> <br>
+<code>npm install</code> <br>
 <code>npm run dev</code>
 
 ## API Docs
