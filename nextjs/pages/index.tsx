@@ -105,7 +105,7 @@ const Home: NextPage = () => {
     }
   };
 
-  if (error) return <div>failed to load</div>;
+  if (error) return <Text>failed to load</Text>;
 
   if (!token)
     return (

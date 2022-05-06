@@ -10,10 +10,11 @@ import {
   Stack,
   useToast,
 } from "@chakra-ui/react";
-import { PropsWithChildren } from "react";
+import {PropsWithChildren, useState} from "react";
 import { useForm } from "react-hook-form";
 import axios from "axios";
 import { KeyedMutator } from "swr";
+import {string} from "prop-types";
 
 type Props = {
   token: string;
@@ -84,6 +85,9 @@ const CreditCard = ({ token, mutator }: PropsWithChildren<Props>) => {
     formState: { errors, isSubmitting },
   } = useForm();
 
+  // @ts-ignore
+  // @ts-ignore
+  // @ts-ignore
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <Grid templateColumns={"repeat(2, 1fr)"} gap={8} w={"full"}>

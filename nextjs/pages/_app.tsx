@@ -1,6 +1,7 @@
 import type { AppProps } from "next/app";
-import { ChakraProvider } from "@chakra-ui/react";
+import {ChakraProvider, useMediaQuery} from "@chakra-ui/react";
 import { extendTheme } from "@chakra-ui/react";
+import Small from "../components/small";
 
 const theme = extendTheme({
   colors: {
@@ -25,10 +26,21 @@ const theme = extendTheme({
 });
 
 function MyApp({ Component, pageProps }: AppProps) {
+  const [isLargerThan1280] = useMediaQuery('(min-width: 1280px)')
+
+
   return (
-    <ChakraProvider theme={theme}>
-      <Component {...pageProps} />
-    </ChakraProvider>
+      <>
+        {isLargerThan1280 ?
+            <ChakraProvider theme={theme}>
+              <Component {...pageProps} />
+            </ChakraProvider>
+            :
+            <ChakraProvider theme={theme}>
+              <Small/>
+            </ChakraProvider>
+      }
+      </>
   );
 }
 
