@@ -1,1 +1,1 @@
-web: go mod tidy
+web: mpp
