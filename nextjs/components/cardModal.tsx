@@ -63,7 +63,6 @@ const CardModal = ({
           status: "success",
           isClosable: true,
         });
-
         onEncryptedCardChange(base64ToHex(resp.data.encrypted_card));
         onEncryptedKeyChange(resp.data.encryption_key);
         closeModal();
@@ -71,17 +70,18 @@ const CardModal = ({
     } catch (error: any) {
       if (error.response) {
         toast({
-          title: error.response.data.message,
+          title: "Could not encrypt",
           status: "error",
           isClosable: true,
         });
       } else {
         toast({
-          title: error.message,
+          title: "Could not encrypt",
           status: "error",
           isClosable: true,
         });
       }
+      closeModal();
     }
   };
 
