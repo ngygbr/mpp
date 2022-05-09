@@ -23,6 +23,7 @@ import { useForm } from "react-hook-form";
 type Props = {
   isOpened: boolean;
   closeModal: () => void;
+  theurl: string;
 } & Record<string, any>;
 
 function base64ToHex(str: string) {
@@ -39,13 +40,13 @@ const CardModal = ({
   isOpened,
   closeModal,
   onEncryptedCardChange,
-  onEncryptedKeyChange,
+  onEncryptedKeyChange, theurl
 }: PropsWithChildren<Props>) => {
   const toast = useToast();
 
   const addCard = async (values: any | undefined) => {
     try {
-      const resp = await axios.post("http://localhost:8080/encryptcard", {
+      const resp = await axios.post(`${theurl}/encryptcard`, {
         credit_card: {
           card_number: values.card_number,
           holder_name: values.holder,

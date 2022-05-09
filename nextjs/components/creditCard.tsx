@@ -14,14 +14,14 @@ import {PropsWithChildren, useState} from "react";
 import { useForm } from "react-hook-form";
 import axios from "axios";
 import { KeyedMutator } from "swr";
-import {string} from "prop-types";
 
 type Props = {
   token: string;
   mutator: KeyedMutator<any>;
+  theurl: string
 } & Record<string, any>;
 
-const CreditCard = ({ token, mutator }: PropsWithChildren<Props>) => {
+const CreditCard = ({ token, mutator, theurl }: PropsWithChildren<Props>) => {
   const toast = useToast();
 
   const setAuthHeader = () => {
@@ -31,7 +31,7 @@ const CreditCard = ({ token, mutator }: PropsWithChildren<Props>) => {
   const onSubmit = async (values: any | undefined) => {
     try {
       const resp = await axios.post(
-        "http://localhost:8080/api/transaction/creditcard",
+        `${theurl}/api/transaction/creditcard`,
         {
           payment_method: {
             credit_card: {

@@ -38,15 +38,17 @@ const Home: NextPage = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const toast = useToast();
 
+  const THE_URL = "http://localhost:8080"
+
   const {data: transactions, mutate, error} = useSWR(token, (token) => fetcher(token));
   const fetcher = (token: string) =>
-    axios.get( "http://localhost:8080/api/transactions", {
+    axios.get( `${THE_URL}/api/transactions`, {
         method: "GET",
         headers: {Authorization: token,},
     }).then((res) => res.data);
 
   const getToken = async () => {
-    const response = await fetch("http://localhost:8080/login");
+    const response = await fetch(`${THE_URL}/login`);
     const data = await response.json();
     setToken(data.token);
     Cookies.set("mpp.AuthToken", data.token);
@@ -67,7 +69,7 @@ const Home: NextPage = () => {
   const deleteAllTransaction = async () => {
     try {
       const resp = await axios.delete(
-          "http://localhost:8080/api/transactions",
+          `${THE_URL}/api/transactions`,
         {
           headers: {
             Authorization: token,
@@ -245,16 +247,17 @@ const Home: NextPage = () => {
               </TabList>
               <TabPanels>
                 <TabPanel bg={"brand.300"} color={"brand.100"}>
-                  <CreditCard token={token} mutator={mutate} />
+                  <CreditCard token={token} mutator={mutate}  theurl={THE_URL}/>
                 </TabPanel>
                 <TabPanel bg={"brand.300"} color={"brand.100"}>
-                  <ACH token={token} mutator={mutate} />
+                  <ACH token={token} mutator={mutate} theurl={THE_URL}/>
                 </TabPanel>
                 <TabPanel bg={"brand.300"} color={"brand.100"}>
                   <TokenPayment
                     token={token}
                     mutator={mutate}
                     type={"applepay"}
+                    theurl={THE_URL}
                   />
                 </TabPanel>
                 <TabPanel bg={"brand.300"} color={"brand.100"}>
@@ -262,6 +265,7 @@ const Home: NextPage = () => {
                     token={token}
                     mutator={mutate}
                     type={"googlepay"}
+                    theurl={THE_URL}
                   />
                 </TabPanel>
               </TabPanels>
@@ -316,6 +320,7 @@ const Home: NextPage = () => {
                         token={token}
                         mutator={mutate}
                         transaction={transaction}
+                        theurl={THE_URL}
                       />
                     </GridItem>
                   ))

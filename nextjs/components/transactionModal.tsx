@@ -46,6 +46,7 @@ type Props = {
     created_at: string;
     updated_at: string;
   };
+  theurl: string;
 } & Record<string, any>;
 
 const TransactionModal = ({
@@ -53,14 +54,12 @@ const TransactionModal = ({
   mutator,
   isOpened,
   closeModal,
-  transaction,
+  transaction, theurl,
 }: PropsWithChildren<Props>) => {
   const toast = useToast();
-  const settleUrl =
-    "http://localhost:8080/api/transaction/" + transaction.id + "/settle";
-  const rejectUrl =
-    "http://localhost:8080/api/transaction/" + transaction.id + "/reject";
-  const deleteUrl = "http://localhost:8080/api/transaction/" + transaction.id;
+  const settleUrl = `${theurl}/api/transaction/${transaction.id}/settle`;
+  const rejectUrl = `${theurl}/api/transaction/${transaction.id}/reject`;
+  const deleteUrl = `${theurl}/api/transaction/${transaction.id}`;
 
   const statusUpdate = async (url: string) => {
     try {

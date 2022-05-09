@@ -25,9 +25,10 @@ type Props = {
     created_at: string;
     updated_at: string;
   };
+  theurl: string;
 } & Record<string, any>;
 
-const Card = ({ token, mutator, transaction }: PropsWithChildren<Props>) => {
+const Card = ({ token, mutator, transaction, theurl }: PropsWithChildren<Props>) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (
@@ -69,6 +70,7 @@ const Card = ({ token, mutator, transaction }: PropsWithChildren<Props>) => {
         isOpened={isOpen}
         closeModal={onClose}
         transaction={transaction}
+        theurl={theurl}
       />
     </>
   );

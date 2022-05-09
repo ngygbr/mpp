@@ -20,9 +20,10 @@ import { KeyedMutator } from "swr";
 type Props = {
   token: string;
   mutator: KeyedMutator<any>;
+  theurl: string;
 } & Record<string, any>;
 
-const ACH = ({ token, mutator }: PropsWithChildren<Props>) => {
+const ACH = ({ token, mutator, theurl }: PropsWithChildren<Props>) => {
   const toast = useToast();
 
   const setAuthHeader = () => {
@@ -32,7 +33,7 @@ const ACH = ({ token, mutator }: PropsWithChildren<Props>) => {
   const onSubmit = async (values: any | undefined) => {
     try {
       const resp = await axios.post(
-        "http://localhost:8080/api/transaction/ach",
+        `${theurl}/api/transaction/ach`,
         {
           amount: parseInt(values.amount),
           payment_method: {

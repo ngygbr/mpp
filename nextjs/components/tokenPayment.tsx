@@ -21,9 +21,10 @@ import { MdDoneAll } from "react-icons/md";
 type Props = {
   token: string;
   mutator: KeyedMutator<any>;
+  theurl: string;
 } & Record<string, any>;
 
-const TokenPayment = ({ token, mutator, type }: PropsWithChildren<Props>) => {
+const TokenPayment = ({ token, mutator, type, theurl }: PropsWithChildren<Props>) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const toast = useToast();
   const setAuthHeader = () => {
@@ -35,7 +36,7 @@ const TokenPayment = ({ token, mutator, type }: PropsWithChildren<Props>) => {
   const onSubmitApplePay = async (values: any | undefined) => {
     try {
       const resp = await axios.post(
-        "http://localhost:8080/api/transaction/applepay",
+          `${theurl}/api/transaction/applepay`,
         {
           amount: Math.trunc(Math.random() * 2000) + 1,
           payment_method: {
@@ -92,7 +93,7 @@ const TokenPayment = ({ token, mutator, type }: PropsWithChildren<Props>) => {
   const onSubmitGooglePay = async (values: any | undefined) => {
     try {
       const resp = await axios.post(
-        "http://localhost:8080/api/transaction/googlepay",
+          `${theurl}/api/transaction/googlepay`,
         {
           amount: 1099,
           payment_method: {
@@ -159,6 +160,7 @@ const TokenPayment = ({ token, mutator, type }: PropsWithChildren<Props>) => {
         closeModal={onClose}
         onEncryptedCardChange={setEncrypted}
         onEncryptedKeyChange={setIdentifier}
+        theurl={theurl}
       />
       <form
         onSubmit={
