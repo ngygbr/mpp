@@ -26,11 +26,11 @@ const theme = extendTheme({
 });
 
 function MyApp({ Component, pageProps }: AppProps) {
-  const [isLargerThan1080] = useMediaQuery('(min-width: 380px)')
+  const [isLargerThan1000] = useMediaQuery('(min-width: 1000px)')
 
   return (
       <ChakraProvider theme={theme}>
-        {isLargerThan1080 ?
+        {isLargerThan1000 ?
               <Component {...pageProps} />
             :
               <Small/>
