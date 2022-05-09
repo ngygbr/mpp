@@ -12,9 +12,9 @@
 *.out
 
 # Dependency directories (remove the comment below to include it)
-vendor/
+# vendor/
 .idea
-go.sum
+# go.sum
 certs/
 
 .DS_Store
