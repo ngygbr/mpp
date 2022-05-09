@@ -23,6 +23,7 @@ func Init() error {
 	a := r.PathPrefix("/api").Subrouter()
 	a.Use(authMiddleware)
 
+	r.HandleFunc("/", homeRoute).Methods("GET")
 	r.HandleFunc("/healthcheck", healthcheck.HealthCheck).Methods("GET")
 	r.HandleFunc("/login", auth.Login).Methods("GET")
 	r.HandleFunc("/encryptcard", controller.ProcessEncryptCard).Methods("POST")
@@ -90,5 +91,10 @@ func preFlight(w http.ResponseWriter, _ *http.Request) {
 	w.Header().Set("Access-Control-Request-Headers", "*")
 	w.Header().Set("Access-Control-Expose-Headers", "*")
 
+	w.WriteHeader(http.StatusOK)
+}
+
+func homeRoute(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprintf(w, "This is Mock Payment Processor API. Created by @ngygbr")
 	w.WriteHeader(http.StatusOK)
 }
