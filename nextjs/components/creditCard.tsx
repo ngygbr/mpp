@@ -7,7 +7,7 @@ import {
   GridItem,
   HStack,
   Input, InputGroup, InputLeftAddon,
-  Stack,
+  Stack, Text,
   useToast,
 } from "@chakra-ui/react";
 import {PropsWithChildren, useState} from "react";
@@ -96,11 +96,10 @@ const CreditCard = ({ token, mutator }: PropsWithChildren<Props>) => {
             <FormControl id="amount" isInvalid={errors.amount}>
               <InputGroup>
               <InputLeftAddon
-                  children='Amount'
                   bg={"brand.300"}
                   color={"brand.100"}
                   border={"none"}
-              />
+              ><Text>Amount</Text></InputLeftAddon>
               <Input
                 _hover={{ pointerEvents: "none" }}
                 cursor={"default"}
@@ -120,11 +119,10 @@ const CreditCard = ({ token, mutator }: PropsWithChildren<Props>) => {
             >
               <InputGroup>
                 <InputLeftAddon
-                    children='Card Number'
                     bg={"brand.300"}
                     color={"brand.100"}
                     border={"none"}
-                />
+                ><Text>Card Number</Text></InputLeftAddon>
               <Input
                 type="number"
                 {...register("card_number", {
@@ -147,11 +145,10 @@ const CreditCard = ({ token, mutator }: PropsWithChildren<Props>) => {
             <FormControl id="holder_name" isRequired isInvalid={errors.holder_name}>
               <InputGroup>
                 <InputLeftAddon
-                    children='Card Holder'
                     bg={"brand.300"}
                     color={"brand.100"}
                     border={"none"}
-                />
+                ><Text>Card Holder</Text></InputLeftAddon>
               <Input
                 type="text"
                 {...register("holder_name", {
@@ -172,11 +169,10 @@ const CreditCard = ({ token, mutator }: PropsWithChildren<Props>) => {
               <FormControl id="exp_date" isRequired isInvalid={errors.exp_date}>
                 <InputGroup>
                   <InputLeftAddon
-                      children='Exp. Date'
                       bg={"brand.300"}
                       color={"brand.100"}
                       border={"none"}
-                  />
+                  ><Text>Exp. Date</Text></InputLeftAddon>
                 <Input
                   placeholder={"MM/YY"}
                   type="text"
@@ -196,11 +192,10 @@ const CreditCard = ({ token, mutator }: PropsWithChildren<Props>) => {
               <FormControl id="cvc" isRequired isInvalid={errors.cvc}>
                 <InputGroup>
                   <InputLeftAddon
-                      children='CVC'
                       bg={"brand.300"}
                       color={"brand.100"}
                       border={"none"}
-                  />
+                  ><Text>CVC</Text></InputLeftAddon>
                 <Input
                   type="password"
                   {...register("cvc", {

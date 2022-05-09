@@ -9,6 +9,7 @@ import {
   Input, InputGroup, InputLeftAddon,
   Select,
   Stack,
+  Text,
   useToast,
 } from "@chakra-ui/react";
 import { PropsWithChildren } from "react";
@@ -93,11 +94,10 @@ const ACH = ({ token, mutator }: PropsWithChildren<Props>) => {
             <FormControl id="amount" isInvalid={errors.amount}>
               <InputGroup>
                 <InputLeftAddon
-                    children='Amount'
                     bg={"brand.300"}
                     color={"brand.100"}
                     border={"none"}
-                />
+                ><Text>Amount</Text></InputLeftAddon>
               <Input
                 value={Math.trunc(Math.random() * 2000) + 1}
                 type="number"
@@ -115,11 +115,10 @@ const ACH = ({ token, mutator }: PropsWithChildren<Props>) => {
             >
               <InputGroup>
                 <InputLeftAddon
-                    children='Account Number'
                     bg={"brand.300"}
                     color={"brand.100"}
                     border={"none"}
-                />
+                ><Text>Account Number</Text></InputLeftAddon>
               <Input
                 type="number"
                 {...register("account_number", {
@@ -138,11 +137,10 @@ const ACH = ({ token, mutator }: PropsWithChildren<Props>) => {
             >
               <InputGroup>
                 <InputLeftAddon
-                    children='Routing Number'
                     bg={"brand.300"}
                     color={"brand.100"}
                     border={"none"}
-                />
+                ><Text>Routing Number</Text></InputLeftAddon>
               <Input
                 type="text"
                 {...register("routing_number", {
@@ -177,11 +175,10 @@ const ACH = ({ token, mutator }: PropsWithChildren<Props>) => {
               <FormControl id="sec_code" isRequired isInvalid={errors.sec_code}>
                 <InputGroup>
                   <InputLeftAddon
-                      children='SEC'
                       bg={"brand.300"}
                       color={"brand.100"}
                       border={"none"}
-                  />
+                  ><Text>SEC</Text></InputLeftAddon>
                 <Input
                   type="password"
                   {...register("sec_code", {

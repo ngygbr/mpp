@@ -13,7 +13,7 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
-  Stack,
+  Stack, Text,
   useToast,
 } from "@chakra-ui/react";
 import React, { PropsWithChildren } from "react";
@@ -110,11 +110,10 @@ const CardModal = ({
                   >
                     <InputGroup>
                     <InputLeftAddon
-                        children='Card Number'
                         bg={"brand.200"}
                         color={"brand.100"}
                         border={"none"}
-                    />
+                    ><Text>Card Number</Text></InputLeftAddon>
                     <Input
                       type="number"
                       {...register("card_number", {
@@ -137,11 +136,10 @@ const CardModal = ({
                   <FormControl id="holder" isRequired isInvalid={errors.holder}>
                     <InputGroup>
                       <InputLeftAddon
-                          children='Card Holder'
                           bg={"brand.200"}
                           color={"brand.100"}
                           border={"none"}
-                      />
+                      ><Text>Card Holder</Text></InputLeftAddon>
                     <Input
                       type="text"
                       {...register("holder", {
@@ -166,11 +164,10 @@ const CardModal = ({
                     >
                       <InputGroup>
                         <InputLeftAddon
-                            children='Exp. Date'
                             bg={"brand.200"}
                             color={"brand.100"}
                             border={"none"}
-                        />
+                        ><Text>Exp. Date</Text></InputLeftAddon>
                       <Input
                         type="text"
                         {...register("exp_date", {
@@ -189,11 +186,10 @@ const CardModal = ({
                     <FormControl id="cvc" isRequired isInvalid={errors.cvc}>
                       <InputGroup>
                         <InputLeftAddon
-                            children='CVC'
                             bg={"brand.200"}
                             color={"brand.100"}
                             border={"none"}
-                        />
+                        ><Text>CVC</Text></InputLeftAddon>
                       <Input
                         type="password"
                         {...register("cvc", {
