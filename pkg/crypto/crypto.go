@@ -6,9 +6,10 @@ import (
 	"crypto/rand"
 	"encoding/hex"
 	"encoding/json"
+	"github.com/ngygbr/mpp/pkg/model"
+	validator "github.com/ngygbr/mpp/pkg/validate"
 	"io"
 	"log"
-	"github.com/ngygbr/mpp/pkg/model"
 )
 
 func generateKey() (string, error) {
@@ -23,6 +24,10 @@ func generateKey() (string, error) {
 }
 
 func EncryptCard(cardToEncrypt *model.CreditCard, keyString string) (string, string, error) {
+
+	if err := validator.ValidateCreditCard(cardToEncrypt); err != nil {
+		return "", "", err
+	}
 
 	marshalledCard, err := json.Marshal(cardToEncrypt)
 	if err != nil {
