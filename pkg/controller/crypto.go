@@ -27,6 +27,10 @@ func ProcessEncryptCard(w http.ResponseWriter, r *http.Request) {
 	}
 
 	ciphertext, encKey, err := crypter.EncryptCard(encryptedData.Card, encryptedData.EncryptionKey)
+	if err != nil {
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
 
 	encryptedData.EncryptedCard = []byte(ciphertext)
 	encryptedData.EncryptionKey = encKey
