@@ -13,6 +13,9 @@ In the <code>nextjs</code> directory: <br>
 <code>npm install</code> <br>
 <code>npm run dev</code>
 
+Run locally: <br>
+Use the localhost based THE_URL variable in <code>nextjs/pages/index.tsx</code> <br>
+
 ## API Docs
 <hr />
 
