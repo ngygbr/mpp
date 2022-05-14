@@ -38,6 +38,7 @@ const Home: NextPage = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const toast = useToast();
 
+  //const THE_URL = "http://localhost:8080"
   const THE_URL = "https://glacial-shore-09295.herokuapp.com"
 
   const {data: transactions, mutate, error} = useSWR(token, (token) => fetcher(token));
